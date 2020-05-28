@@ -68,11 +68,13 @@ function SphereCubeBufferGeometry( radius, widthSegments, heightSegments, phiSta
 	buildPlane( 'x', 'y', 'z', 1, - 1, width, height, depth, widthSegments, heightSegments, 4 ); // pz
 	buildPlane( 'x', 'y', 'z', - 1, - 1, width, height, - depth, widthSegments, heightSegments, 5 ); // nz
 
+	console.log(vertices.length);
+
+	var vIndex;
+
 	// generate vertices, normals and uvs
 
-	for (var vIndex = 0; vIndex < vertices.length; v += 3) {
-
-		console.log(vIndex);
+	for (vIndex = 0; vIndex < vertices.length; vIndex += 3) {
 
 		vertex.x = vertices[vIndex];
 		vertex.y = vertices[vIndex + 1];
@@ -137,8 +139,6 @@ function SphereCubeBufferGeometry( radius, widthSegments, heightSegments, phiSta
 	// indices
 
 	// indices are the same as the cube indices
-
-	indices = tmpCube.indices;
 
 	/*
 
