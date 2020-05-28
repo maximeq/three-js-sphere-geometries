@@ -72,9 +72,15 @@ function SphereCubeBufferGeometry( radius, widthSegments, heightSegments, phiSta
 
 	var vIndex;
 
+	var verticesSphere = [];
+	var normalsSphere = [];
+	var uvsSphere = [];
+
 	// generate vertices, normals and uvs
 
 	for (vIndex = 0; vIndex < vertices.length; vIndex += 3) {
+
+		console.log(vIndex);
 
 		vertex.x = vertices[vIndex];
 		vertex.y = vertices[vIndex + 1];
@@ -83,16 +89,16 @@ function SphereCubeBufferGeometry( radius, widthSegments, heightSegments, phiSta
 		// normalize to have sphere vertex
 
 		vertex.normalize();
-		vertices.push( vertex.x, vertex.y, vertex.z );
+		verticesSphere.push( vertex.x, vertex.y, vertex.z );
 
 		// normal
 
 		normal.set( vertex.x, vertex.y, vertex.z );
-		normals.push( normal.x, normal.y, normal.z );
+		normalsSphere.push( normal.x, normal.y, normal.z );
 
 		// uv
 
-		uvs.push( u, 1 - v );
+		uvsSphere.push( u, 1 - v );
 
 		//verticesRow.push( index ++ );
 	}
@@ -163,9 +169,9 @@ function SphereCubeBufferGeometry( radius, widthSegments, heightSegments, phiSta
 	// build geometry
 
 	this.setIndex( indices );
-	this.addAttribute( 'position', new Float32BufferAttribute( vertices, 3 ) );
-	this.addAttribute( 'normal', new Float32BufferAttribute( normals, 3 ) );
-	this.addAttribute( 'uv', new Float32BufferAttribute( uvs, 2 ) );
+	this.addAttribute( 'position', new THREE.Float32BufferAttribute( verticesSphere, 3 ) );
+	this.addAttribute( 'normal', new THREE.Float32BufferAttribute( normalsSphere, 3 ) );
+	this.addAttribute( 'uv', new THREE.Float32BufferAttribute( uvsSphere, 2 ) );
 
 	function buildPlane( u, v, w, udir, vdir, width, height, depth, gridX, gridY, materialIndex ) {
 
