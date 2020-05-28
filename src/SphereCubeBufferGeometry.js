@@ -87,7 +87,10 @@ function SphereCubeBufferGeometry( radius, widthHeightSegments, phiStart, phiLen
 
 		// normalize to have sphere vertex
 
-		vertex.normalize();
+        vertex.normalize();
+        vertex.x *= radius;
+        vertex.y *= radius;
+        vertex.z *= radius;
 		verticesSphere.push( vertex.x, vertex.y, vertex.z );
 
 		// normal
