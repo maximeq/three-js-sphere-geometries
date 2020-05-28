@@ -46,7 +46,7 @@
         <script>
 
             // geometry is kept as a global variable to be used in the following script.
-            var geometry = new THREE.CapsuleBufferGeometry();
+            var geometry = new THREE.SphereCubeBufferGeometry();
             var material = new THREE.MeshPhongMaterial( {
                 wireframe:true
             });
@@ -56,35 +56,21 @@
             // init GUI to change the capsule
             var gui = new dat.GUI();
 
-			var CapsuleControls = function() {
-				this.radiusTop = 12;
-                this.radiusBottom = 4;
-                this.height = 20;
-                this.radialSegments = 16;
-                this.heightSegments = 10;
-                this.capsTopSegments = 8;
-                this.capsBottomSegments = 8;
-                this.thetaStart = 0;
-                this.thetaLength = 2*Math.PI;
-
+			var SphereControls = function() {
                 this.style = "Wireframe";
 			};
 
-			var capsuleControls = new CapsuleControls();
+			var sphereControls = new SphereControls();
 			var folder = gui.addFolder( 'Controls' );
 
             var genGeometry = function(){
                 mesh.geometry.dispose();
                 mesh.geometry = new THREE.CapsuleBufferGeometry(
-                    capsuleControls.radiusTop,
-                    capsuleControls.radiusBottom,
-                    capsuleControls.height,
-                    capsuleControls.radialSegments,
-                    capsuleControls.heightSegments,
-                    capsuleControls.capsTopSegments,
-                    capsuleControls.capsBottomSegments,
-                    capsuleControls.thetaStart,
-                    capsuleControls.thetaLength
+                    1,
+                    sphereControls.widthSegments,
+                    sphereControls.heightSegments,
+                    0,
+                    Math.PI 
                 );
             };
             genGeometry();
@@ -99,7 +85,14 @@
                 updateShadow();
 			});
             */
-
+            folder.add(capsuleControls, 'radialSegments' ).min(4).max(128).step(1).onChange(function() {
+                genGeometry();
+                updateShadow();
+			});
+            folder.add(capsuleControls, 'heightSegments' ).min(1).max(128).step(1).onChange(function() {
+                genGeometry();
+                updateShadow();
+			});
             folder.add(capsuleControls, 'style', ["Wireframe", "Smooth", "Flat"]).onChange(function() {
                 mesh.material.wireframe = capsuleControls.style === "Wireframe";
                 mesh.material.shading = capsuleControls.style === "Smooth" ? THREE.SmoothShading : THREE.FlatShading;

@@ -21,7 +21,7 @@ function SphereCubeBufferGeometry( radius, widthSegments, heightSegments, phiSta
 
 	// generate cube
 
-	tmpCube = THREE.BoxBufferGeometry(1, 1, 1, widthSegments, heightSegments, heightSegments);
+	var tmpCube = THREE.BoxBufferGeometry(1, 1, 1, widthSegments, heightSegments, heightSegments);
 
 	radius = radius || 1;
 
