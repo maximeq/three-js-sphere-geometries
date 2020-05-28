@@ -46,7 +46,7 @@
         <script>
 
             // geometry is kept as a global variable to be used in the following script.
-            var geometry = new THREE.SphereCubeBufferGeometry();
+            var geometry = new THREE.IsocahedronBufferGeometry();
             var material = new THREE.MeshPhongMaterial( {
                 wireframe:true
             });
@@ -68,7 +68,7 @@
 
             var genGeometry = function(){
                 mesh.geometry.dispose();
-                mesh.geometry = new THREE.SphereCubeBufferGeometry(
+                mesh.geometry = new THREE.IsocahedronBufferGeometry(
                     sphereControls.radius,
                     sphereControls.widthSegments,
                     sphereControls.heightSegments,
