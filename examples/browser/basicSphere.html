@@ -57,7 +57,7 @@
             var gui = new dat.GUI();
 
 			var SphereControls = function() {
-                this.radius = 1;
+                this.radius = 5;
                 this.widthHeightSegments = 16;
                 this.style = "Wireframe";
 			};
@@ -69,11 +69,7 @@
                 mesh.geometry.dispose();
                 mesh.geometry = new THREE.SphereCubeBufferGeometry(
                     sphereControls.radius,
-                    sphereControls.widthHeightSegments,
-                    0,
-                    Math.PI * 2,
-                    0,
-                    Math.PI * 2
+                    sphereControls.widthHeightSegments
                 );
             };
             genGeometry();
