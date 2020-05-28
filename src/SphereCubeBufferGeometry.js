@@ -96,7 +96,7 @@ function SphereCubeBufferGeometry( radius, widthSegments, heightSegments, phiSta
 
 		// normal
 
-		normal.set( vertex.x, vertex.y, vertex.z );
+		normal.set( vertex.x, vertex.y, vertex.z ).normalize();
 		normalsSphere.push( normal.x, normal.y, normal.z );
 
 		// uv
