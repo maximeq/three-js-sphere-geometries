@@ -58,7 +58,8 @@
 
 			var SphereControls = function() {
                 this.radius = 5;
-                this.widthHeightSegments = 16;
+                // this.widthHeightSegments = 16;
+                this.subdivisionsLevel = 1;
                 this.style = "Wireframe";
 			};
 
@@ -69,7 +70,8 @@
                 mesh.geometry.dispose();
                 mesh.geometry = new THREE.IsocahedronBufferGeometry(
                     sphereControls.radius,
-                    sphereControls.widthHeightSegments
+                    sphereControls.subdivisionsLevel
+                    // sphereControls.widthHeightSegments
                 );
             };
             genGeometry();
@@ -88,7 +90,8 @@
                 genGeometry();
                 updateShadow();
 			});
-            folder.add(sphereControls, 'widthHeightSegments' ).min(1).max(32).step(1).onChange(function() {
+            // folder.add(sphereControls, 'widthHeightSegments' ).min(1).max(32).step(1).onChange(function() {
+            folder.add(sphereControls, 'subdivisionsLevel' ).min(1).max(32).step(1).onChange(function() {
                 genGeometry();
                 updateShadow();
 			});

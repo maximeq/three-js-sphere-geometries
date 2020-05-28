@@ -219,9 +219,6 @@ function IsocahedronBufferGeometry( radius, subdivisionsLevel, phiStart, phiLeng
 
 	radius = radius || 1;
 
-	widthSegments = Math.max( 3, Math.floor( widthSegments ) || 8 );
-	heightSegments = Math.max( 2, Math.floor( heightSegments ) || 6 );
-
 	phiStart = phiStart !== undefined ? phiStart : 0;
 	phiLength = phiLength !== undefined ? phiLength : Math.PI * 2;
 
@@ -257,7 +254,7 @@ function IsocahedronBufferGeometry( radius, subdivisionsLevel, phiStart, phiLeng
     
     verticesInit();
     trianglesInit();
-    // refineTriangles();
+    refineTriangles();
     initNormals();    
 
 	this.setIndex( indices );
@@ -267,7 +264,7 @@ function IsocahedronBufferGeometry( radius, subdivisionsLevel, phiStart, phiLeng
 
 	function verticesInit() {
         // create 12 vertices of a icosahedron
-        var t = (1.0 + Math.Sqrt(5.0)) / 2.0;
+        var t = (1.0 + Math.sqrt(5.0)) / 2.0;
 
         vertices.push(-1,  t,  0);
         vertices.push( 1,  t,  0);
@@ -315,12 +312,14 @@ function IsocahedronBufferGeometry( radius, subdivisionsLevel, phiStart, phiLeng
     }
 
     // return index of point in the middle of p1 and p2
-    function getMiddlePoint(p1, p2) {
-        // not in cache, calculate it
+    function getMiddlePoint(id1, id2) {
+        let point1 = new THREE.Vector3(vertices[3*id1], vertices[3*id1+1], vertices[3*id1+2]);
+        let point2 = new THREE.Vector3(vertices[3*id2], vertices[3*id2+1], vertices[3*id2+2]);
+        
         var middle = new THREE.Vector3(
-            (p1.x + p2.x) / 2.0, 
-            (p1.y + p2.y) / 2.0, 
-            (p1.z + p2.z) / 2.0);
+            (point1.x + point2.x) / 2.0, 
+            (point1.y + point2.y) / 2.0, 
+            (point1.z + point2.z) / 2.0);
 
         return middle;
     }
@@ -337,14 +336,14 @@ function IsocahedronBufferGeometry( radius, subdivisionsLevel, phiStart, phiLeng
                 var b = getMiddlePoint(y, z);
                 var c = getMiddlePoint(z, x);
 
-                vertices.push(a);
-                vertices.push(b);
-                vertices.push(c);
+                vertices.push(a.x, a.y, a.z);
+                vertices.push(b.x, b.y, b.z);
+                vertices.push(c.x, c.y, c.z);
 
-                indices2.push(x, a, c);
-                indices2.push(y, b, a);
-                indices2.push(z, c, b);
-                indices2.push(a, b, c);
+                indices2.push(x, vertices.length-3, vertices.length-1);
+                indices2.push(y, vertices.length-2, vertices.length-3);
+                indices2.push(z, vertices.length-1, vertices.length-2);
+                indices2.push(a, vertices.length-2, vertices.length-1);
             }
             indices = indices2;
         }
