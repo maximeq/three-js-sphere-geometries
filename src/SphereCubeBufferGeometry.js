@@ -19,6 +19,10 @@ function SphereCubeBufferGeometry( radius, widthSegments, heightSegments, phiSta
 		thetaLength: thetaLength
 	};
 
+	// generate cube
+
+	tmpCube = THREE.BoxBufferGeometry(1, 1, 1, widthSegments, heightSegments, heightSegments);
+
 	radius = radius || 1;
 
 	widthSegments = Math.max( 3, Math.floor( widthSegments ) || 8 );
@@ -48,6 +52,30 @@ function SphereCubeBufferGeometry( radius, widthSegments, heightSegments, phiSta
 	var uvs = [];
 
 	// generate vertices, normals and uvs
+
+	for (vIndex = 0; vIndex < tmpCube.vertices.lenght; v += 3) {
+
+		vertex.x = vertices[vIndex];
+		vertex.y = vertices[vIndex + 1];
+		vertex.z = vertices[vIndex + 2];
+
+		// normalize to have sphere vertex
+
+		vertex.normalize();
+
+		// normal
+
+		normal.set( vertex.x, vertex.y, vertex.z );
+		normals.push( normal.x, normal.y, normal.z );
+
+		// uv
+
+		uvs.push( u, 1 - v );
+
+		verticesRow.push( index ++ );
+	}
+
+	/*
 
 	for ( iy = 0; iy <= heightSegments; iy ++ ) {
 
@@ -84,7 +112,15 @@ function SphereCubeBufferGeometry( radius, widthSegments, heightSegments, phiSta
 
 	}
 
+	*/
+
 	// indices
+
+	// indices are the same as the cube indices
+
+	indices = tmpCube.indices;
+
+	/*
 
 	for ( iy = 0; iy < heightSegments; iy ++ ) {
 
@@ -102,6 +138,8 @@ function SphereCubeBufferGeometry( radius, widthSegments, heightSegments, phiSta
 
 	}
 
+	*/
+
 	// build geometry
 
 	this.setIndex( indices );
@@ -111,5 +149,5 @@ function SphereCubeBufferGeometry( radius, widthSegments, heightSegments, phiSta
 
 }
 
-SphereBufferGeometry.prototype = Object.create( BufferGeometry.prototype );
-SphereBufferGeometry.prototype.constructor = SphereBufferGeometry;
+SphereCubeBufferGeometry.prototype = Object.create( BufferGeometry.prototype );
+SphereCubeBufferGeometry.prototype.constructor = SphereCubeBufferGeometry;
