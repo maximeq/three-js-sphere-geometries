@@ -325,7 +325,7 @@ function IsocahedronBufferGeometry( radius, subdivisionsLevel, phiStart, phiLeng
     }
 
     function refineTriangles() {
-        for (var i = 0; i < subdivisionsLevel; i++) {
+        for (var i = 0; i < subdivisionsLevel-1; i++) {
             var indices2 = [];
             for (let index = 0; index < indices.length; index += 3) {
                 // replace triangle by 4 triangles
@@ -343,7 +343,7 @@ function IsocahedronBufferGeometry( radius, subdivisionsLevel, phiStart, phiLeng
                 indices2.push(x, vertices.length-3, vertices.length-1);
                 indices2.push(y, vertices.length-2, vertices.length-3);
                 indices2.push(z, vertices.length-1, vertices.length-2);
-                indices2.push(a, vertices.length-2, vertices.length-1);
+                indices2.push(vertices.length-3, vertices.length-2, vertices.length-1);
             }
             indices = indices2;
         }
