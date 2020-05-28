@@ -57,6 +57,7 @@
             var gui = new dat.GUI();
 
 			var SphereControls = function() {
+                this.radius = 1;
                 this.widthSegments = 16;
                 this.heightSegments = 16;
                 this.style = "Wireframe";
@@ -68,7 +69,7 @@
             var genGeometry = function(){
                 mesh.geometry.dispose();
                 mesh.geometry = new THREE.SphereCubeBufferGeometry(
-                    1,
+                    sphereControls.radius,
                     sphereControls.widthSegments,
                     sphereControls.heightSegments,
                     0,
@@ -89,17 +90,21 @@
                 updateShadow();
 			});
             */
-            folder.add(capsuleControls, 'widthSegments' ).min(4).max(128).step(1).onChange(function() {
+            folder.add(sphereControls, 'radius' ).min(1).max(10).step(1).onChange(function() {
                 genGeometry();
                 updateShadow();
 			});
-            folder.add(capsuleControls, 'heightSegments' ).min(4).max(128).step(1).onChange(function() {
+            folder.add(sphereControls, 'widthSegments' ).min(4).max(32).step(1).onChange(function() {
                 genGeometry();
                 updateShadow();
 			});
-            folder.add(capsuleControls, 'style', ["Wireframe", "Smooth", "Flat"]).onChange(function() {
-                mesh.material.wireframe = capsuleControls.style === "Wireframe";
-                mesh.material.shading = capsuleControls.style === "Smooth" ? THREE.SmoothShading : THREE.FlatShading;
+            folder.add(sphereControls, 'heightSegments' ).min(4).max(32).step(1).onChange(function() {
+                genGeometry();
+                updateShadow();
+			});
+            folder.add(sphereControls, 'style', ["Wireframe", "Smooth", "Flat"]).onChange(function() {
+                mesh.material.wireframe = sphereControls.style === "Wireframe";
+                mesh.material.shading = sphereControls.style === "Smooth" ? THREE.SmoothShading : THREE.FlatShading;
 			});
 
 			folder.open();
