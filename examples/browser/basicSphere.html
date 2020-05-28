@@ -58,8 +58,7 @@
 
 			var SphereControls = function() {
                 this.radius = 1;
-                this.widthSegments = 16;
-                this.heightSegments = 16;
+                this.widthHeightSegments = 16;
                 this.style = "Wireframe";
 			};
 
@@ -70,8 +69,7 @@
                 mesh.geometry.dispose();
                 mesh.geometry = new THREE.SphereCubeBufferGeometry(
                     sphereControls.radius,
-                    sphereControls.widthSegments,
-                    sphereControls.heightSegments,
+                    sphereControls.widthHeightSegments,
                     0,
                     Math.PI * 2,
                     0,
@@ -94,11 +92,7 @@
                 genGeometry();
                 updateShadow();
 			});
-            folder.add(sphereControls, 'widthSegments' ).min(4).max(32).step(1).onChange(function() {
-                genGeometry();
-                updateShadow();
-			});
-            folder.add(sphereControls, 'heightSegments' ).min(4).max(32).step(1).onChange(function() {
+            folder.add(sphereControls, 'widthHeightSegments' ).min(4).max(32).step(1).onChange(function() {
                 genGeometry();
                 updateShadow();
 			});

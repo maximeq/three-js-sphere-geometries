@@ -3,7 +3,7 @@ const THREE = require("three-full/builds/Three.cjs.js");
 /**
  * @author baptistewagner & lucassort
  */
-function SphereCubeBufferGeometry( radius, widthSegments, heightSegments, phiStart, phiLength, thetaStart, thetaLength ) {
+function SphereCubeBufferGeometry( radius, widthHeightSegments, phiStart, phiLength, thetaStart, thetaLength ) {
 
 	THREE.BufferGeometry.call( this );
 
@@ -11,8 +11,7 @@ function SphereCubeBufferGeometry( radius, widthSegments, heightSegments, phiSta
 
 	this.parameters = {
 		radius: radius,
-		widthSegments: widthSegments,
-		heightSegments: heightSegments,
+		widthHeightSegments: widthHeightSegments,
 		phiStart: phiStart,
 		phiLength: phiLength,
 		thetaStart: thetaStart,
@@ -61,12 +60,12 @@ function SphereCubeBufferGeometry( radius, widthSegments, heightSegments, phiSta
 	var normals = [];
 	var uvs = [];
 
-	buildPlane( 'z', 'y', 'x', - 1, - 1, depth, height, width, depthSegments, heightSegments, 0 ); // px
-	buildPlane( 'z', 'y', 'x', 1, - 1, depth, height, - width, depthSegments, heightSegments, 1 ); // nx
-	buildPlane( 'x', 'z', 'y', 1, 1, width, depth, height, widthSegments, depthSegments, 2 ); // py
-	buildPlane( 'x', 'z', 'y', 1, - 1, width, depth, - height, widthSegments, depthSegments, 3 ); // ny
-	buildPlane( 'x', 'y', 'z', 1, - 1, width, height, depth, widthSegments, heightSegments, 4 ); // pz
-	buildPlane( 'x', 'y', 'z', - 1, - 1, width, height, - depth, widthSegments, heightSegments, 5 ); // nz
+	buildPlane( 'z', 'y', 'x', - 1, - 1, depth, height, width, widthHeightSegments, widthHeightSegments, 0 ); // px
+	buildPlane( 'z', 'y', 'x', 1, - 1, depth, height, - width, widthHeightSegments, widthHeightSegments, 1 ); // nx
+	buildPlane( 'x', 'z', 'y', 1, 1, width, depth, height, widthHeightSegments, widthHeightSegments, 2 ); // py
+	buildPlane( 'x', 'z', 'y', 1, - 1, width, depth, - height, widthHeightSegments, widthHeightSegments, 3 ); // ny
+	buildPlane( 'x', 'y', 'z', 1, - 1, width, height, depth, widthHeightSegments, widthHeightSegments, 4 ); // pz
+	buildPlane( 'x', 'y', 'z', - 1, - 1, width, height, - depth, widthHeightSegments, widthHeightSegments, 5 ); // nz
 
 	console.log(vertices.length);
 
