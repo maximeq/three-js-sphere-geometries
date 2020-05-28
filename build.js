@@ -36,7 +36,8 @@ build({
     external: [ 'three-full/builds/Three.cjs.js' ],
 }, {
     format: 'umd',
-    name: 'THREECapsuleBufferGeometry',
+    // name: 'THREECapsuleBufferGeometry',
+    name: 'THREESphereCubeBufferGeometry',
     file: './dist/browser/three-js-capsule-geometry.js',
     globals: {
         'three-full/builds/Three.cjs.js' : 'THREE'
@@ -64,7 +65,8 @@ build({
     external: [ 'three-full/builds/Three.cjs.js' ],
 }, {
     format: 'umd',
-    name: 'THREECapsuleBufferGeometry',
+    // name: 'THREECapsuleBufferGeometry',
+    name: 'THREESphereCubeBufferGeometry',
     file: './dist/browser/three-js-capsule-geometry.min.js',
     globals: {
         'three-full/builds/Three.cjs.js' : 'THREE'

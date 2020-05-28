@@ -149,5 +149,7 @@ function SphereCubeBufferGeometry( radius, widthSegments, heightSegments, phiSta
 
 }
 
-SphereCubeBufferGeometry.prototype = Object.create( BufferGeometry.prototype );
+SphereCubeBufferGeometry.prototype = Object.create( THREE.BufferGeometry.prototype );
 SphereCubeBufferGeometry.prototype.constructor = SphereCubeBufferGeometry;
+
+module.exports = SphereCubeBufferGeometry;
