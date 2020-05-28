@@ -1,10 +1,13 @@
-// SphereCubeBufferGeometry
+const THREE = require("three-full/builds/Three.cjs.js");
 
+/**
+ * @author baptistewagner & lucassort
+ */
 function SphereCubeBufferGeometry( radius, widthSegments, heightSegments, phiStart, phiLength, thetaStart, thetaLength ) {
 
 	BufferGeometry.call( this );
 
-	this.type = 'SphereBufferGeometry';
+	this.type = 'SphereCubeBufferGeometry';
 
 	this.parameters = {
 		radius: radius,
