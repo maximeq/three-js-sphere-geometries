@@ -89,17 +89,17 @@
                 updateShadow();
 			});
             */
-            folder.add(capsuleControls, 'widthSegments' ).min(4).max(128).step(1).onChange(function() {
+            folder.add(sphereControls, 'widthSegments' ).min(4).max(128).step(1).onChange(function() {
                 genGeometry();
                 updateShadow();
 			});
-            folder.add(capsuleControls, 'heightSegments' ).min(4).max(128).step(1).onChange(function() {
+            folder.add(sphereControls, 'heightSegments' ).min(4).max(128).step(1).onChange(function() {
                 genGeometry();
                 updateShadow();
 			});
-            folder.add(capsuleControls, 'style', ["Wireframe", "Smooth", "Flat"]).onChange(function() {
-                mesh.material.wireframe = capsuleControls.style === "Wireframe";
-                mesh.material.shading = capsuleControls.style === "Smooth" ? THREE.SmoothShading : THREE.FlatShading;
+            folder.add(sphereControls, 'style', ["Wireframe", "Smooth", "Flat"]).onChange(function() {
+                mesh.material.wireframe = sphereControls.style === "Wireframe";
+                mesh.material.shading = sphereControls.style === "Smooth" ? THREE.SmoothShading : THREE.FlatShading;
 			});
 
 			folder.open();
