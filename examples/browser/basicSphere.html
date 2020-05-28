@@ -57,6 +57,8 @@
             var gui = new dat.GUI();
 
 			var SphereControls = function() {
+                this.widthSegments = 16;
+                this.heightSegments = 16;
                 this.style = "Wireframe";
 			};
 
@@ -70,7 +72,9 @@
                     sphereControls.widthSegments,
                     sphereControls.heightSegments,
                     0,
-                    Math.PI 
+                    Math.PI * 2,
+                    0,
+                    Math.PI * 2
                 );
             };
             genGeometry();
@@ -85,11 +89,11 @@
                 updateShadow();
 			});
             */
-            folder.add(capsuleControls, 'radialSegments' ).min(4).max(128).step(1).onChange(function() {
+            folder.add(capsuleControls, 'widthSegments' ).min(4).max(128).step(1).onChange(function() {
                 genGeometry();
                 updateShadow();
 			});
-            folder.add(capsuleControls, 'heightSegments' ).min(1).max(128).step(1).onChange(function() {
+            folder.add(capsuleControls, 'heightSegments' ).min(4).max(128).step(1).onChange(function() {
                 genGeometry();
                 updateShadow();
 			});
