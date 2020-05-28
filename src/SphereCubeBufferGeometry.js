@@ -3,7 +3,7 @@ const THREE = require("three-full/builds/Three.cjs.js");
 /**
  * @author baptistewagner & lucassort
  */
-function SphereCubeBufferGeometry( radius, widthHeightSegments, phiStart, phiLength, thetaStart, thetaLength ) {
+function SphereCubeBufferGeometry( radius, widthHeightSegments ) {
 
 	THREE.BufferGeometry.call( this );
 
@@ -11,11 +11,7 @@ function SphereCubeBufferGeometry( radius, widthHeightSegments, phiStart, phiLen
 
 	this.parameters = {
 		radius: radius,
-		widthHeightSegments: widthHeightSegments,
-		phiStart: phiStart,
-		phiLength: phiLength,
-		thetaStart: thetaStart,
-		thetaLength: thetaLength
+		widthHeightSegments: widthHeightSegments
 	};
 
 	var scope = this;
@@ -26,30 +22,16 @@ function SphereCubeBufferGeometry( radius, widthHeightSegments, phiStart, phiLen
 
 	widthHeightSegments = Math.max( 3, Math.floor( widthHeightSegments ) || 8 );
 
-	phiStart = phiStart !== undefined ? phiStart : 0;
-	phiLength = phiLength !== undefined ? phiLength : Math.PI * 2;
-
-	thetaStart = thetaStart !== undefined ? thetaStart : 0;
-	thetaLength = thetaLength !== undefined ? thetaLength : Math.PI;
-
-	var thetaEnd = thetaStart + thetaLength;
-
 	var ix, iy;
 	var depth = 1;
 	var height = 1;
 	var width = 1;
-
-	var index = 0;
-	var grid = [];
 
 	var vertex = new THREE.Vector3();
 	var normal = new THREE.Vector3();
 
 	var numberOfVertices = 0;
 	var groupStart = 0;
-
-	var u = 1;
-	var v = 1;
 
 	// buffers
 
@@ -58,6 +40,8 @@ function SphereCubeBufferGeometry( radius, widthHeightSegments, phiStart, phiLen
 	var normals = [];
 	var uvs = [];
 
+	// building the cube the same way as in BoxBufferGeometry
+
 	buildPlane( 'z', 'y', 'x', - 1, - 1, depth, height, width, widthHeightSegments, widthHeightSegments, 0 ); // px
 	buildPlane( 'z', 'y', 'x', 1, - 1, depth, height, - width, widthHeightSegments, widthHeightSegments, 1 ); // nx
 	buildPlane( 'x', 'z', 'y', 1, 1, width, depth, height, widthHeightSegments, widthHeightSegments, 2 ); // py
@@ -65,19 +49,17 @@ function SphereCubeBufferGeometry( radius, widthHeightSegments, phiStart, phiLen
 	buildPlane( 'x', 'y', 'z', 1, - 1, width, height, depth, widthHeightSegments, widthHeightSegments, 4 ); // pz
 	buildPlane( 'x', 'y', 'z', - 1, - 1, width, height, - depth, widthHeightSegments, widthHeightSegments, 5 ); // nz
 
-	console.log(vertices.length);
+	// then normalizing the cube to have a sphere 
 
 	var vIndex;
 
 	var verticesSphere = [];
 	var normalsSphere = [];
-	var uvsSphere = [];
 
 	// generate vertices, normals and uvs
 
 	for (vIndex = 0; vIndex < vertices.length; vIndex += 3) {
 
-		console.log(vIndex);
 
 		vertex.x = vertices[vIndex];
 		vertex.y = vertices[vIndex + 1];
@@ -96,82 +78,14 @@ function SphereCubeBufferGeometry( radius, widthHeightSegments, phiStart, phiLen
 		normal.set( vertex.x, vertex.y, vertex.z ).normalize();
 		normalsSphere.push( normal.x, normal.y, normal.z );
 
-		// uv
-
-		uvsSphere.push( u, 1 - v );
-
-		//verticesRow.push( index ++ );
 	}
-
-	/*
-
-	for ( iy = 0; iy <= heightSegments; iy ++ ) {
-
-		var verticesRow = [];
-
-		var v = iy / heightSegments;
-
-		for ( ix = 0; ix <= widthSegments; ix ++ ) {
-
-			var u = ix / widthSegments;
-
-			// vertex
-
-			vertex.x = - radius * Math.cos( phiStart + u * phiLength ) * Math.sin( thetaStart + v * thetaLength );
-			vertex.y = radius * Math.cos( thetaStart + v * thetaLength );
-			vertex.z = radius * Math.sin( phiStart + u * phiLength ) * Math.sin( thetaStart + v * thetaLength );
-
-			vertices.push( vertex.x, vertex.y, vertex.z );
-
-			// normal
-
-			normal.set( vertex.x, vertex.y, vertex.z ).normalize();
-			normals.push( normal.x, normal.y, normal.z );
-
-			// uv
-
-			uvs.push( u, 1 - v );
-
-			verticesRow.push( index ++ );
-
-		}
-
-		grid.push( verticesRow );
-
-	}
-
-	*/
-
-	// indices
-
-	// indices are the same as the cube indices
-
-	/*
-
-	for ( iy = 0; iy < heightSegments; iy ++ ) {
-
-		for ( ix = 0; ix < widthSegments; ix ++ ) {
-
-			var a = grid[ iy ][ ix + 1 ];
-			var b = grid[ iy ][ ix ];
-			var c = grid[ iy + 1 ][ ix ];
-			var d = grid[ iy + 1 ][ ix + 1 ];
-
-			if ( iy !== 0 || thetaStart > 0 ) { indices.push( a, b, d ); }
-			if ( iy !== heightSegments - 1 || thetaEnd < Math.PI ) { indices.push( b, c, d ); }
-
-		}
-
-	}
-
-	*/
 
 	// build geometry
 
 	this.setIndex( indices );
 	this.addAttribute( 'position', new THREE.Float32BufferAttribute( verticesSphere, 3 ) );
 	this.addAttribute( 'normal', new THREE.Float32BufferAttribute( normalsSphere, 3 ) );
-	this.addAttribute( 'uv', new THREE.Float32BufferAttribute( uvsSphere, 2 ) );
+	this.addAttribute( 'uv', new THREE.Float32BufferAttribute( uvs, 2 ) );
 
 	function buildPlane( u, v, w, udir, vdir, width, height, depth, gridX, gridY, materialIndex ) {
 
