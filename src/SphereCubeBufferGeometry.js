@@ -24,8 +24,7 @@ function SphereCubeBufferGeometry( radius, widthHeightSegments, phiStart, phiLen
 
 	radius = radius || 1;
 
-	widthSegments = Math.max( 3, Math.floor( widthSegments ) || 8 );
-	heightSegments = Math.max( 2, Math.floor( heightSegments ) || 6 );
+	widthHeightSegments = Math.max( 3, Math.floor( widthHeightSegments ) || 8 );
 
 	phiStart = phiStart !== undefined ? phiStart : 0;
 	phiLength = phiLength !== undefined ? phiLength : Math.PI * 2;
@@ -39,7 +38,6 @@ function SphereCubeBufferGeometry( radius, widthHeightSegments, phiStart, phiLen
 	var depth = 1;
 	var height = 1;
 	var width = 1;
-	var depthSegments = heightSegments;
 
 	var index = 0;
 	var grid = [];
