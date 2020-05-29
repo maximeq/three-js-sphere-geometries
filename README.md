@@ -1,11 +1,10 @@
 # three-js-sphere-geometries
-Four different meshes for modelling spheres as new geometric primitives for THREE.JS.
+3 different meshes for modelling spheres as new geometric primitives for THREE.JS.
 
-The different meshes are the following:
-* UV Sphere
-* Normalized Cube
-* Spherified Cube
-* Icosahedron
+The different meshes are the following (with their related Buffer Geometry):
+* Normalized Cube (NormalizedCubeBufferGeometry)
+* Spherified Cube (SpherifiedCubeBufferGeometry)
+* Icosahedron (IcosahedronBufferGeometry)
 
 
 ## Setup
