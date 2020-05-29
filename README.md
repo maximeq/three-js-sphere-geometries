@@ -1,5 +1,5 @@
 # three-js-sphere-geometries
-Four different meshes for modelling spheres as new geometry primitives for THREE.JS.
+Four different meshes for modelling spheres as new geometric primitives for THREE.JS.
 
 The different meshes are the following:
 * UV Sphere
