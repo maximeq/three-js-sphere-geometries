@@ -1,7 +1,7 @@
 {
   "name": "three-js-sphere-geometries",
   "version": "1.0.0",
-  "description": "Four different meshes for modelling spheres as new geometry primitives for THREE.JS.",
+  "description": "Four different meshes for modelling spheres as new geometric primitives for THREE.JS.",
   "main": "src/exports.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
