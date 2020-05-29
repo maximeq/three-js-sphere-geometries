@@ -54,20 +54,20 @@
             var mesh = new THREE.Mesh( geometry, material );
 
             // init GUI to change the sphere
-            var gui = new dat.GUI();
+            var gui = new dat.GUI();;
 
 			var SphereControls = function() {
                 this.model = "Icosahedron"
                 this.radius = 10;
                 this.subdivisionsLevel = 1;
-                this.nSegments = 2;
+                this.nbSegments = 2;
                 this.style = "Wireframe";
 			};
 
 			var sphereControls = new SphereControls();
-			var folder = gui.addFolder( 'Controls' );
+			var folder = folder = gui.addFolder( 'Controls' );
 
-            var genGeometry = function(){
+            var genGeometry = function() {
                 mesh.geometry.dispose();
                 if (sphereControls.model == "Icosahedron") {
                     mesh.geometry = new THREE.IcosahedronBufferGeometry(
@@ -78,58 +78,47 @@
                 else if (sphereControls.model == "Normalized Cube") {
                     mesh.geometry = new THREE.NormalizedCubeBufferGeometry(
                     sphereControls.radius,
-                    sphereControls.nSegments
+                    sphereControls.nbSegments
                 );
                 }
                 else if (sphereControls.model == "Classic") {
-
                     mesh.geometry = new THREE.SphereBufferGeometry(
                     sphereControls.radius,
-                    sphereControls.nSegments,
-                    sphereControls.nSegments
-                    );
+                    sphereControls.nbSegments,
+                    sphereControls.nbSegments
+                );
                 }
                 else if (sphereControls.model == "Spherified Cube") {
                     mesh.geometry = new THREE.SpherifiedCubeBufferGeometry(
                     sphereControls.radius,
-                    sphereControls.nSegments,
-                    sphereControls.nSegments
-                    );
+                    sphereControls.nbSegments,
+                    sphereControls.nbSegments
+                );
                 }
             }
 
-            genGeometry();
-            
-            /*
-            folder.add(capsuleControls, 'thetaStart' ).min(0).max(2*Math.PI).step(0.1).onChange(function() {
-                genGeometry();
-                updateShadow();
-			});
-            folder.add(capsuleControls, 'thetaLength' ).min(0).max(2*Math.PI).step(0.1).onChange(function() {
-                genGeometry();
-                updateShadow();
-			});
-            */
             folder.add(sphereControls, 'model', ["Classic", "Normalized Cube", "Icosahedron", "Spherified Cube"]).onChange(function() {
                 genGeometry();
                 updateShadow();
-			});
+            });
             folder.add(sphereControls, 'radius' ).min(1).max(20).step(1).onChange(function() {
                 genGeometry();
                 updateShadow();
-			});
+            });
             folder.add(sphereControls, 'subdivisionsLevel' ).min(1).max(6).step(1).onChange(function() {
                 genGeometry();
                 updateShadow();
             });
-            folder.add(sphereControls, 'nSegments' ).min(1).max(10).step(1).onChange(function() {
+            folder.add(sphereControls, 'nbSegments' ).min(1).max(10).step(1).onChange(function() {
                 genGeometry();
                 updateShadow();
-			});
+            });
             folder.add(sphereControls, 'style', ["Wireframe", "Smooth", "Flat"]).onChange(function() {
                 mesh.material.wireframe = sphereControls.style === "Wireframe";
                 mesh.material.shading = sphereControls.style === "Smooth" ? THREE.SmoothShading : THREE.FlatShading;
-			});
+            });
+
+            genGeometry();
 
 			folder.open();
 
