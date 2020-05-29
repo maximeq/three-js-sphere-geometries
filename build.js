@@ -36,7 +36,7 @@ build({
     external: [ 'three-full/builds/Three.cjs.js' ],
 }, {
     format: 'umd',
-    name: 'THREESphereCubeBufferGeometry',
+    name: 'THREESphereBufferGeometries',
     file: './dist/browser/three-js-sphere-geometries.js',
     globals: {
         'three-full/builds/Three.cjs.js' : 'THREE'
@@ -64,7 +64,7 @@ build({
     external: [ 'three-full/builds/Three.cjs.js' ],
 }, {
     format: 'umd',
-    name: 'THREESphereCubeBufferGeometry',
+    name: 'THREESphereBufferGeometries',
     file: './dist/browser/three-js-sphere-geometries.min.js',
     globals: {
         'three-full/builds/Three.cjs.js' : 'THREE'
