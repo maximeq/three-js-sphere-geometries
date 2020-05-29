@@ -46,7 +46,7 @@
         <script>
 
             // geometry is kept as a global variable to be used in the following script.
-            var geometry = new THREE.IsocahedronBufferGeometry();
+            var geometry = new THREE.IcosahedronBufferGeometry();
             var material = new THREE.MeshPhongMaterial( {
                 wireframe:true
             });
@@ -57,6 +57,7 @@
             var gui = new dat.GUI();
 
 			var SphereControls = function() {
+                this.rep = "Icosahedron"
                 this.radius = 10;
                 this.subdivisionsLevel = 1;
                 this.style = "Wireframe";
@@ -67,11 +68,29 @@
 
             var genGeometry = function(){
                 mesh.geometry.dispose();
-                mesh.geometry = new THREE.IsocahedronBufferGeometry(
+                if (sphereControls.rep == "Icosahedron") {
+                    console.log("Ico");
+                    mesh.geometry = new THREE.IcosahedronBufferGeometry(
                     sphereControls.radius,
                     sphereControls.subdivisionsLevel
                 );
-            };
+                }
+                else if (sphereControls.rep == "Normalized Cube") {
+                    console.log("Cube");
+                    mesh.geometry = new THREE.SphereCubeBufferGeometry(
+                    sphereControls.radius,
+                    16
+                );
+                }
+                else if (sphereControls.rep == "Classic") {
+                    console.log("Classic");
+                    mesh.geometry = new THREE.IcosahedronBufferGeometry(
+                    sphereControls.radius,
+                    sphereControls.subdivisionsLevel
+                );
+                }
+            }
+
             genGeometry();
             
             /*
@@ -84,6 +103,10 @@
                 updateShadow();
 			});
             */
+            folder.add(sphereControls, 'rep', ["Classic", "Normalized Cube", "Icosahedron"]).onChange(function() {
+                genGeometry();
+                updateShadow();
+			});
             folder.add(sphereControls, 'radius' ).min(1).max(20).step(1).onChange(function() {
                 genGeometry();
                 updateShadow();

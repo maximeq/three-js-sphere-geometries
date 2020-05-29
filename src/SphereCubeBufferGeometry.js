@@ -198,7 +198,7 @@ SphereCubeBufferGeometry.prototype.constructor = SphereCubeBufferGeometry;
 
 module.exports = SphereCubeBufferGeometry;
 
-function IsocahedronBufferGeometry( radius, subdivisionsLevel, phiStart, phiLength, thetaStart, thetaLength ) {
+function IcosahedronBufferGeometry( radius, subdivisionsLevel, phiStart, phiLength, thetaStart, thetaLength ) {
 
 	THREE.BufferGeometry.call( this );
 
@@ -350,7 +350,7 @@ function IsocahedronBufferGeometry( radius, subdivisionsLevel, phiStart, phiLeng
 
     function initNormals() {
 		// normal
-		
+
         for (let index = 0; index < vertices.length; index += 3) {
             let x = vertices[index];
             let y = vertices[index + 1];
@@ -376,7 +376,7 @@ function IsocahedronBufferGeometry( radius, subdivisionsLevel, phiStart, phiLeng
 
 }
 
-IsocahedronBufferGeometry.prototype = Object.create( THREE.BufferGeometry.prototype );
-IsocahedronBufferGeometry.prototype.constructor = IsocahedronBufferGeometry;
+IcosahedronBufferGeometry.prototype = Object.create( THREE.BufferGeometry.prototype );
+IcosahedronBufferGeometry.prototype.constructor = IcosahedronBufferGeometry;
 
-module.exports = IsocahedronBufferGeometry;
+module.exports = IcosahedronBufferGeometry;
