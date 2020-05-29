@@ -51,6 +51,7 @@ npm start
 ```
 
 This should open a browser window with a test application on a local server.
+
 http-server must be installed in order to run this command:
 
 ```
