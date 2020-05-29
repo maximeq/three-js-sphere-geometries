@@ -6,7 +6,7 @@ import { uglify } from "rollup-plugin-uglify";
 export default {
     input: './src/exports.js',
     output: {
-        file: './dist/browser/three-js-capsule-geometry.js',
+        file: './dist/browser/three-js-sphere-geometries.js',
         format: 'cjs'
     },
     external: ['three-full'],
