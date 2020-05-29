@@ -87,7 +87,14 @@
                     sphereControls.radius,
                     sphereControls.nSegments,
                     sphereControls.nSegments
-                );
+                    );
+                }
+                else if (sphereControls.model == "Spherified Cube") {
+                    mesh.geometry = new THREE.SpherifiedCubeBufferGeometry(
+                    sphereControls.radius,
+                    sphereControls.nSegments,
+                    sphereControls.nSegments
+                    );
                 }
             }
 
@@ -103,7 +110,7 @@
                 updateShadow();
 			});
             */
-            folder.add(sphereControls, 'model', ["Classic", "Normalized Cube", "Icosahedron"]).onChange(function() {
+            folder.add(sphereControls, 'model', ["Classic", "Normalized Cube", "Icosahedron", "Spherified Cube"]).onChange(function() {
                 genGeometry();
                 updateShadow();
 			});
