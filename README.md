@@ -35,9 +35,9 @@ Distribution files can be found in ./dist/browser, to be included in your HTML :
     <body>
         <!-- Don't forget to include THREE, its is not shipped with the lib -->
         <script src="three.js"></script>
-        <script src="dist/browser/three-js-capsule-geometry.js"></script>
+        <script src="dist/browser/three-js-sphere-geometries.js"></script>
         <script>
-            alert('Checking definition of CapsuleBufferGeometry : ' + THREE.CapsuleBufferGeometry !== undefined)
+            
         </script>
     </body>
 </html>
