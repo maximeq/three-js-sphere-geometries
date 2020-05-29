@@ -59,21 +59,20 @@ function SpherifiedCubeBufferGeometry( radius, widthHeightSegments ) {
 	for (vIndex = 0; vIndex < vertices.length; vIndex += 3) {
 
 
-		vertex.x = vertices[vIndex];
-		vertex.y = vertices[vIndex + 1];
-		vertex.z = vertices[vIndex + 2];
+		vertex.x = vertices[vIndex] *  2.0;
+		vertex.y = vertices[vIndex + 1] * 2.0;
+		vertex.z = vertices[vIndex + 2] * 2.0;
 
-        // normalize to have sphere vertex
-        
+		// normalize to have sphere vertex
+		        
 		vertex2.x = vertex.x ** 2;
 		vertex2.y = vertex.y ** 2;
 		vertex2.z = vertex.z ** 2;
-		
-		console.log(vertex2);
+	
+        vertex.x *= Math.sqrt(1.0 - 0.5 * (vertex2.y + vertex2.z) + vertex2.y * vertex2.z/3.0) * radius;
+        vertex.y *= Math.sqrt(1.0 - 0.5 * (vertex2.z + vertex2.x) + vertex2.z * vertex2.x/3.0) * radius;
+		vertex.z *= Math.sqrt(1.0 - 0.5 * (vertex2.x + vertex2.y) + vertex2.x * vertex2.y/3.0) * radius;
 
-        vertex.x *= Math.sqrt(1.0 - 0.5 * (vertex2.y + vertex2.z) + vertex2.y * vertex2.z/3.0);
-        vertex.y *= Math.sqrt(1.0 - 0.5 * (vertex2.z + vertex2.x) + vertex2.z * vertex2.x/3.0);
-        vertex.z *= Math.sqrt(1.0 - 0.5 * (vertex2.x + vertex2.y) + vertex2.x * vertex2.y/3.0);
 		verticesSphere.push( vertex.x, vertex.y, vertex.z );
 
 		// normal
