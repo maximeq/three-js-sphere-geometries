@@ -1,8 +1,8 @@
-var THREESphereCubeBufferGeometry = require("./SphereCubeBufferGeometry");
+var THREENormalizedCubeBufferGeometry = require("./NormalizedCubeBufferGeometry");
 
-THREE.SphereCubeBufferGeometry = THREESphereCubeBufferGeometry;
+THREE.NormalizedCubeBufferGeometry = THREENormalizedCubeBufferGeometry;
 
-module.exports = THREESphereCubeBufferGeometry;
+module.exports = THREENormalizedCubeBufferGeometry;
 
 var THREEIcosahedronBufferGeometry = require("./IcosahedronBufferGeometry");
 

@@ -76,12 +76,13 @@
                 );
                 }
                 else if (sphereControls.model == "Normalized Cube") {
-                    mesh.geometry = new THREE.SphereCubeBufferGeometry(
+                    mesh.geometry = new THREE.NormalizedCubeBufferGeometry(
                     sphereControls.radius,
                     sphereControls.nSegments
                 );
                 }
                 else if (sphereControls.model == "Classic") {
+
                     mesh.geometry = new THREE.SphereBufferGeometry(
                     sphereControls.radius,
                     sphereControls.nSegments,
@@ -110,7 +111,6 @@
                 genGeometry();
                 updateShadow();
 			});
-            // folder.add(sphereControls, 'widthHeightSegments' ).min(1).max(32).step(1).onChange(function() {
             folder.add(sphereControls, 'subdivisionsLevel' ).min(1).max(6).step(1).onChange(function() {
                 genGeometry();
                 updateShadow();
