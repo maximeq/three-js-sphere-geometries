@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Capsule Geometry</title>
+        <title>Sphere Geometries</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
         <style>
@@ -33,7 +33,7 @@
 
     <body>
         <div id="info">
-            <a href="http://threejs.org" target="_blank" rel="noopener">three.js</a> - <a href="https://github.com/maximeq/three-js-capsule-geometry" target="_blank" rel="noopener">THREE CapsuleBufferGeometry</a> - Basic example
+            <a href="http://threejs.org" target="_blank" rel="noopener">three.js</a> - <a href="https://github.com/BWagner310/three-js-sphere-geometries" target="_blank" rel="noopener">THREE Sphere geometries</a> - Basic example
         </div>
 
         <script src="../../node_modules/three-full/builds/Three.iife.js"></script>
@@ -42,96 +42,52 @@
             // Alias to use Three-full as Three
             var THREE = THREE || Three;
         </script>
-        <script src="../../dist/browser/three-js-capsule-geometry.js"></script>
+        <script src="../../dist/browser/three-js-sphere-geometries.js"></script>
         <script>
 
             // geometry is kept as a global variable to be used in the following script.
-            var geometry = new THREE.CapsuleBufferGeometry();
+            var geometry = new THREE.IsocahedronBufferGeometry();
             var material = new THREE.MeshPhongMaterial( {
                 wireframe:true
             });
 
             var mesh = new THREE.Mesh( geometry, material );
 
-            // init GUI to change the capsule
+            // init GUI to change the sphere
             var gui = new dat.GUI();
 
-			var CapsuleControls = function() {
-				this.radiusTop = 12;
-                this.radiusBottom = 4;
-                this.height = 20;
-                this.radialSegments = 16;
-                this.heightSegments = 10;
-                this.capsTopSegments = 8;
-                this.capsBottomSegments = 8;
-                this.thetaStart = 0;
-                this.thetaLength = 2*Math.PI;
-
+			var SphereControls = function() {
+                this.radius = 5;
+                // this.widthHeightSegments = 16;
+                this.subdivisionsLevel = 1;
                 this.style = "Wireframe";
 			};
 
-			var capsuleControls = new CapsuleControls();
+			var sphereControls = new SphereControls();
 			var folder = gui.addFolder( 'Controls' );
 
             var genGeometry = function(){
                 mesh.geometry.dispose();
-                mesh.geometry = new THREE.CapsuleBufferGeometry(
-                    capsuleControls.radiusTop,
-                    capsuleControls.radiusBottom,
-                    capsuleControls.height,
-                    capsuleControls.radialSegments,
-                    capsuleControls.heightSegments,
-                    capsuleControls.capsTopSegments,
-                    capsuleControls.capsBottomSegments,
-                    capsuleControls.thetaStart,
-                    capsuleControls.thetaLength
+                mesh.geometry = new THREE.IsocahedronBufferGeometry(
+                    sphereControls.radius,
+                    sphereControls.subdivisionsLevel
+                    // sphereControls.widthHeightSegments
                 );
             };
             genGeometry();
-
-            // Limit range of Ricci N to 8 since the SMC accuracy is not sufficient to capture the detail when
-			folder.add(capsuleControls, 'radiusTop' ).min(1).max(64).step(1).onChange(function() {
+            
+            folder.add(sphereControls, 'radius' ).min(1).max(10).step(1).onChange(function() {
                 genGeometry();
                 updateShadow();
 			});
-            folder.add(capsuleControls, 'radiusBottom' ).min(1).max(64).step(1).onChange(function() {
+            // folder.add(sphereControls, 'widthHeightSegments' ).min(1).max(32).step(1).onChange(function() {
+            folder.add(sphereControls, 'subdivisionsLevel' ).min(1).max(32).step(1).onChange(function() {
                 genGeometry();
                 updateShadow();
 			});
-            folder.add(capsuleControls, 'height' ).min(1).max(64).step(1).onChange(function() {
-                genGeometry();
-                updateShadow();
-			});
-            folder.add(capsuleControls, 'radialSegments' ).min(4).max(128).step(1).onChange(function() {
-                genGeometry();
-                updateShadow();
-			});
-            folder.add(capsuleControls, 'heightSegments' ).min(1).max(128).step(1).onChange(function() {
-                genGeometry();
-                updateShadow();
-			});
-            folder.add(capsuleControls, 'capsTopSegments' ).min(2).max(128).step(1).onChange(function() {
-                genGeometry();
-                updateShadow();
-			});
-            folder.add(capsuleControls, 'capsBottomSegments' ).min(2).max(128).step(1).onChange(function() {
-                genGeometry();
-                updateShadow();
-			});
-            /*
-            folder.add(capsuleControls, 'thetaStart' ).min(0).max(2*Math.PI).step(0.1).onChange(function() {
-                genGeometry();
-                updateShadow();
-			});
-            folder.add(capsuleControls, 'thetaLength' ).min(0).max(2*Math.PI).step(0.1).onChange(function() {
-                genGeometry();
-                updateShadow();
-			});
-            */
-
-            folder.add(capsuleControls, 'style', ["Wireframe", "Smooth", "Flat"]).onChange(function() {
-                mesh.material.wireframe = capsuleControls.style === "Wireframe";
-                mesh.material.shading = capsuleControls.style === "Smooth" ? THREE.SmoothShading : THREE.FlatShading;
+            folder.add(sphereControls, 'style', ["Wireframe", "Smooth", "Flat"]).onChange(function() {
+                mesh.material.wireframe = sphereControls.style === "Wireframe";
+                mesh.material.shading = sphereControls.style === "Smooth" ? THREE.SmoothShading : THREE.FlatShading;
 			});
 
 			folder.open();

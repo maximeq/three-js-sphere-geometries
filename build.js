@@ -6,8 +6,8 @@ var terser = require('rollup-plugin-terser').terser; // minify
 var prettier = require('rollup-plugin-prettier');
 
 // clean previous build
-fs.removeSync('/dist/browser/three-js-capsule-geometry.js')
-fs.removeSync('/dist/browser/three-js-capsule-geometry.min.js')
+fs.removeSync('/dist/browser/three-js-sphere-geometries.js')
+fs.removeSync('/dist/browser/three-js-sphere-geometries.min.js')
 
 async function build(inputOptions, outputOptions) {
     // create a bundle
@@ -36,9 +36,8 @@ build({
     external: [ 'three-full/builds/Three.cjs.js' ],
 }, {
     format: 'umd',
-    // name: 'THREECapsuleBufferGeometry',
     name: 'THREESphereCubeBufferGeometry',
-    file: './dist/browser/three-js-capsule-geometry.js',
+    file: './dist/browser/three-js-sphere-geometries.js',
     globals: {
         'three-full/builds/Three.cjs.js' : 'THREE'
     }
@@ -65,9 +64,8 @@ build({
     external: [ 'three-full/builds/Three.cjs.js' ],
 }, {
     format: 'umd',
-    // name: 'THREECapsuleBufferGeometry',
     name: 'THREESphereCubeBufferGeometry',
-    file: './dist/browser/three-js-capsule-geometry.min.js',
+    file: './dist/browser/three-js-sphere-geometries.min.js',
     globals: {
         'three-full/builds/Three.cjs.js' : 'THREE'
     }
