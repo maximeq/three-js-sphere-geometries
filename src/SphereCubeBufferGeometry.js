@@ -349,7 +349,8 @@ function IsocahedronBufferGeometry( radius, subdivisionsLevel, phiStart, phiLeng
     }
 
     function initNormals() {
-        // normal
+		// normal
+		
         for (let index = 0; index < vertices.length; index += 3) {
             let x = vertices[index];
             let y = vertices[index + 1];
