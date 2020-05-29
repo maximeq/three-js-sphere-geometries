@@ -57,9 +57,10 @@
             var gui = new dat.GUI();
 
 			var SphereControls = function() {
-                this.rep = "Icosahedron"
+                this.model = "Icosahedron"
                 this.radius = 10;
                 this.subdivisionsLevel = 1;
+                this.nSegments = 2;
                 this.style = "Wireframe";
 			};
 
@@ -68,25 +69,23 @@
 
             var genGeometry = function(){
                 mesh.geometry.dispose();
-                if (sphereControls.rep == "Icosahedron") {
-                    console.log("Ico");
+                if (sphereControls.model == "Icosahedron") {
                     mesh.geometry = new THREE.IcosahedronBufferGeometry(
                     sphereControls.radius,
                     sphereControls.subdivisionsLevel
                 );
                 }
-                else if (sphereControls.rep == "Normalized Cube") {
-                    console.log("Cube");
+                else if (sphereControls.model == "Normalized Cube") {
                     mesh.geometry = new THREE.SphereCubeBufferGeometry(
                     sphereControls.radius,
-                    16
+                    sphereControls.nSegments
                 );
                 }
-                else if (sphereControls.rep == "Classic") {
-                    console.log("Classic");
-                    mesh.geometry = new THREE.IcosahedronBufferGeometry(
+                else if (sphereControls.model == "Classic") {
+                    mesh.geometry = new THREE.SphereBufferGeometry(
                     sphereControls.radius,
-                    sphereControls.subdivisionsLevel
+                    sphereControls.nSegments,
+                    sphereControls.nSegments
                 );
                 }
             }
@@ -103,7 +102,7 @@
                 updateShadow();
 			});
             */
-            folder.add(sphereControls, 'rep', ["Classic", "Normalized Cube", "Icosahedron"]).onChange(function() {
+            folder.add(sphereControls, 'model', ["Classic", "Normalized Cube", "Icosahedron"]).onChange(function() {
                 genGeometry();
                 updateShadow();
 			});
@@ -112,7 +111,11 @@
                 updateShadow();
 			});
             // folder.add(sphereControls, 'widthHeightSegments' ).min(1).max(32).step(1).onChange(function() {
-            folder.add(sphereControls, 'subdivisionsLevel' ).min(1).max(8).step(1).onChange(function() {
+            folder.add(sphereControls, 'subdivisionsLevel' ).min(1).max(6).step(1).onChange(function() {
+                genGeometry();
+                updateShadow();
+            });
+            folder.add(sphereControls, 'nSegments' ).min(1).max(10).step(1).onChange(function() {
                 genGeometry();
                 updateShadow();
 			});
