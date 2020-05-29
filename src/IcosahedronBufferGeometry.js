@@ -36,7 +36,8 @@ function IcosahedronBufferGeometry( radius, subdivisionsLevel ) {
     verticesInit();
     trianglesInit();
     refineTriangles();
-    initNormals();    
+    initNormals();
+    initUVs();    
 
 	this.setIndex( indices );
 	this.addAttribute( 'position', new THREE.Float32BufferAttribute( vertices, 3 ) );
@@ -130,8 +131,6 @@ function IcosahedronBufferGeometry( radius, subdivisionsLevel ) {
     }
 
     function initNormals() {
-		// normal
-
         for (let index = 0; index < vertices.length; index += 3) {
             let x = vertices[index];
             let y = vertices[index + 1];
@@ -140,7 +139,22 @@ function IcosahedronBufferGeometry( radius, subdivisionsLevel ) {
             normal.set( x, y, z ).normalize();
             normals.push( normal.x, normal.y, normal.z );
         }
-	}
+    }
+    
+    function initUVs() {
+        let u = 0.0;
+        let v = 0.0;
+        for (let index = 0; index < vertices.length; index += 3) {
+            let x = vertices[index];
+            let y = vertices[index + 1];
+            let z = vertices[index + 2];
+            
+            u = 0.5 + Math.atan2(z, x) / (2 * Math.PI);
+            v = 0.5 - Math.asin(y) / (Math.PI);
+
+            uvs.push(u, v);
+        }
+    }
 	
 	function addPoint(x, y, z) {
 
