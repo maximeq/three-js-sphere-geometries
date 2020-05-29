@@ -57,8 +57,7 @@
             var gui = new dat.GUI();
 
 			var SphereControls = function() {
-                this.radius = 5;
-                // this.widthHeightSegments = 16;
+                this.radius = 10;
                 this.subdivisionsLevel = 1;
                 this.style = "Wireframe";
 			};
@@ -71,17 +70,26 @@
                 mesh.geometry = new THREE.IsocahedronBufferGeometry(
                     sphereControls.radius,
                     sphereControls.subdivisionsLevel
-                    // sphereControls.widthHeightSegments
                 );
             };
             genGeometry();
             
-            folder.add(sphereControls, 'radius' ).min(1).max(10).step(1).onChange(function() {
+            /*
+            folder.add(capsuleControls, 'thetaStart' ).min(0).max(2*Math.PI).step(0.1).onChange(function() {
+                genGeometry();
+                updateShadow();
+			});
+            folder.add(capsuleControls, 'thetaLength' ).min(0).max(2*Math.PI).step(0.1).onChange(function() {
+                genGeometry();
+                updateShadow();
+			});
+            */
+            folder.add(sphereControls, 'radius' ).min(1).max(20).step(1).onChange(function() {
                 genGeometry();
                 updateShadow();
 			});
             // folder.add(sphereControls, 'widthHeightSegments' ).min(1).max(32).step(1).onChange(function() {
-            folder.add(sphereControls, 'subdivisionsLevel' ).min(1).max(32).step(1).onChange(function() {
+            folder.add(sphereControls, 'subdivisionsLevel' ).min(1).max(8).step(1).onChange(function() {
                 genGeometry();
                 updateShadow();
 			});
