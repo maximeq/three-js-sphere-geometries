@@ -58,40 +58,48 @@
 			var SphereControls = function() {
                 this.model = "Icosahedron"
                 this.radius = 10;
-                this.subdivisionsLevel = 1;
-                this.segments = 2;
                 this.style = "Wireframe";
-			};
+            };
+            var IcosahedronControls = function() {
+                this.subdivisionLevel = 1;
+            }
+            var OtherSpheresControls = function() {
+                this.segments = 2;
+            }   
 
-			var sphereControls = new SphereControls();
-			var folder = folder = gui.addFolder( 'Controls' );
+            var sphereControls = new SphereControls();
+            var icosahedronControls = new IcosahedronControls();
+            var otherSpheresControls = new OtherSpheresControls();
+            var folder = gui.addFolder( 'Global Controls' );
+            var folderIco = gui.addFolder( 'Icosahedron Controls' );
+            var folderOsp = gui.addFolder( 'Other Sphere Controls' );
 
             var genGeometry = function() {
                 mesh.geometry.dispose();
                 if (sphereControls.model == "Icosahedron") {
                     mesh.geometry = new THREE.IcosahedronBufferGeometry(
                     sphereControls.radius,
-                    sphereControls.subdivisionsLevel
+                    icosahedronControls.subdivisionLevel
                 );
                 }
                 else if (sphereControls.model == "Normalized Cube") {
                     mesh.geometry = new THREE.NormalizedCubeBufferGeometry(
                     sphereControls.radius,
-                    sphereControls.segments
+                    otherSpheresControls.segments
                 );
                 }
                 else if (sphereControls.model == "Classic") {
                     mesh.geometry = new THREE.SphereBufferGeometry(
                     sphereControls.radius,
-                    sphereControls.segments,
-                    sphereControls.segments
+                    otherSpheresControls.segments,
+                    otherSpheresControls.segments
                 );
                 }
                 else if (sphereControls.model == "Spherified Cube") {
                     mesh.geometry = new THREE.SpherifiedCubeBufferGeometry(
                     sphereControls.radius,
-                    sphereControls.segments,
-                    sphereControls.segments
+                    otherSpheresControls.segments,
+                    otherSpheresControls.segments
                 );
                 }
             }
@@ -104,11 +112,11 @@
                 genGeometry();
                 updateShadow();
             });
-            folder.add(sphereControls, 'subdivisionsLevel' ).min(1).max(6).step(1).onChange(function() {
+            folderIco.add(icosahedronControls, 'subdivisionLevel' ).min(1).max(6).step(1).onChange(function() {
                 genGeometry();
                 updateShadow();
             });
-            folder.add(sphereControls, 'segments' ).min(1).max(20).step(1).onChange(function() {
+            folderOsp.add(otherSpheresControls, 'segments' ).min(1).max(20).step(1).onChange(function() {
                 genGeometry();
                 updateShadow();
             });

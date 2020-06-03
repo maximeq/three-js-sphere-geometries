@@ -16,11 +16,7 @@ function NormalizedCubeBufferGeometry( radius, widthHeightSegments ) {
 
 	var scope = this;
 
-	// generate cube
-
 	radius = radius || 1;
-
-	widthHeightSegments = Math.max( 3, Math.floor( widthHeightSegments ) || 8 );
 
 	var ix, iy;
 	var depth = 1;
@@ -29,9 +25,6 @@ function NormalizedCubeBufferGeometry( radius, widthHeightSegments ) {
 
 	var vertex = new THREE.Vector3();
 	var normal = new THREE.Vector3();
-
-	var numberOfVertices = 0;
-	var groupStart = 0;
 
 	// buffers
 
