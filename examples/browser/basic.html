@@ -59,7 +59,7 @@
                 this.model = "Icosahedron"
                 this.radius = 10;
                 this.subdivisionsLevel = 1;
-                this.nbSegments = 2;
+                this.segments = 2;
                 this.style = "Wireframe";
 			};
 
@@ -77,21 +77,21 @@
                 else if (sphereControls.model == "Normalized Cube") {
                     mesh.geometry = new THREE.NormalizedCubeBufferGeometry(
                     sphereControls.radius,
-                    sphereControls.nbSegments
+                    sphereControls.segments
                 );
                 }
                 else if (sphereControls.model == "Classic") {
                     mesh.geometry = new THREE.SphereBufferGeometry(
                     sphereControls.radius,
-                    sphereControls.nbSegments,
-                    sphereControls.nbSegments
+                    sphereControls.segments,
+                    sphereControls.segments
                 );
                 }
                 else if (sphereControls.model == "Spherified Cube") {
                     mesh.geometry = new THREE.SpherifiedCubeBufferGeometry(
                     sphereControls.radius,
-                    sphereControls.nbSegments,
-                    sphereControls.nbSegments
+                    sphereControls.segments,
+                    sphereControls.segments
                 );
                 }
             }
@@ -108,7 +108,7 @@
                 genGeometry();
                 updateShadow();
             });
-            folder.add(sphereControls, 'nbSegments' ).min(1).max(10).step(1).onChange(function() {
+            folder.add(sphereControls, 'segments' ).min(1).max(20).step(1).onChange(function() {
                 genGeometry();
                 updateShadow();
             });
