@@ -3,11 +3,11 @@ const THREE = require("three-full/builds/Three.cjs.js");
 /**
  * @author baptistewagner & lucassort
  */
-function NormalizedCubeBufferGeometry( radius, widthHeightSegments ) {
+function RoundedCubeBufferGeometry( radius, widthHeightSegments ) {
 
 	THREE.BufferGeometry.call( this );
 
-	this.type = 'NormalizedCubeBufferGeometry';
+	this.type = 'RoundedCubeBufferGeometry';
 
 	this.parameters = {
 		radius: radius,
@@ -82,7 +82,7 @@ function NormalizedCubeBufferGeometry( radius, widthHeightSegments ) {
 
 }
 
-NormalizedCubeBufferGeometry.prototype = Object.create( THREE.BufferGeometry.prototype );
-NormalizedCubeBufferGeometry.prototype.constructor = NormalizedCubeBufferGeometry;
+RoundedCubeBufferGeometry.prototype = Object.create( THREE.BufferGeometry.prototype );
+RoundedCubeBufferGeometry.prototype.constructor = RoundedCubeBufferGeometry;
 
-module.exports = NormalizedCubeBufferGeometry;
+module.exports = RoundedCubeBufferGeometry;
