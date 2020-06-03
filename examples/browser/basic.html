@@ -61,7 +61,7 @@
                 this.style = "Wireframe";
             };
             var IcosahedronControls = function() {
-                this.subdivisionLevel = 1;
+                this.subdivisionLevel = 0;
             }
             var OtherSpheresControls = function() {
                 this.segments = 2;
@@ -112,7 +112,7 @@
                 genGeometry();
                 updateShadow();
             });
-            folderIco.add(icosahedronControls, 'subdivisionLevel' ).min(1).max(6).step(1).onChange(function() {
+            folderIco.add(icosahedronControls, 'subdivisionLevel' ).min(0).max(6).step(1).onChange(function() {
                 genGeometry();
                 updateShadow();
             });
