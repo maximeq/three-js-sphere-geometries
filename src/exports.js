@@ -1,11 +1,11 @@
 
 var THREESphereBufferGeometries = {
-    IcosahedronBufferGeometry : require("./IcosahedronBufferGeometry"),
+    IcosahedronSphereBufferGeometry : require("./IcosahedronSphereBufferGeometry"),
     SpherifiedCubeBufferGeometry : require("./SpherifiedCubeBufferGeometry"),
     NormalizedCubeBufferGeometry : require("./NormalizedCubeBufferGeometry")
 };
 
-THREE.IcosahedronBufferGeometry = THREESphereBufferGeometries.IcosahedronBufferGeometry;
+THREE.IcosahedronSphereBufferGeometry = THREESphereBufferGeometries.IcosahedronSphereBufferGeometry;
 THREE.SpherifiedCubeBufferGeometry = THREESphereBufferGeometries.SpherifiedCubeBufferGeometry;
 THREE.NormalizedCubeBufferGeometry = THREESphereBufferGeometries.NormalizedCubeBufferGeometry;
 
