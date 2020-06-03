@@ -42,9 +42,9 @@ Distribution files can be found in ./dist/browser, to be included in your HTML :
         <script src="three.js"></script>
         <script src="dist/browser/three-js-sphere-geometries.js"></script>
         <script>
-            alert('Checking definition of NormalizedCubeBufferGeometry : ' + THREE.NormalizedCubeBufferGeometry !== undefined);
+            alert('Checking definition of RoundedCubeBufferGeometry : ' + THREE.RoundedCubeBufferGeometry !== undefined);
             alert('Checking definition of SpherifiedCubeBufferGeometry : ' + THREE.SpherifiedCubeBufferGeometry !== undefined);
-            alert('Checking definition of IcosahedronBufferGeometry : ' + THREE.IcosahedronBufferGeometry !== undefined);
+            alert('Checking definition of IcosahedronSphereBufferGeometry : ' + THREE.IcosahedronSphereBufferGeometry !== undefined);
         </script>
     </body>
 </html>
