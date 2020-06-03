@@ -13,6 +13,7 @@
     "three-full": "16.0.1"
   },
   "devDependencies": {
+    "http-server": "^0.12.3",
     "eslint": "^4.11.0",
     "fs-extra": "^7.0.1",
     "jsdoc-api": "^4.0.3",

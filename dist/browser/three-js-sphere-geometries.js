@@ -1,584 +1,576 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('three-full/builds/Three.cjs.js')) :
-	typeof define === 'function' && define.amd ? define(['three-full/builds/Three.cjs.js'], factory) :
-	(global.THREESphereBufferGeometries = factory(global.THREE));
+    typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('three-full/builds/Three.cjs.js')) :
+    typeof define === 'function' && define.amd ? define(['three-full/builds/Three.cjs.js'], factory) :
+    (global.THREESphereGeometries = factory(global.THREE));
 }(this, (function (Three_cjs) { 'use strict';
 
-	Three_cjs = Three_cjs && Three_cjs.hasOwnProperty('default') ? Three_cjs['default'] : Three_cjs;
+    Three_cjs = Three_cjs && Three_cjs.hasOwnProperty('default') ? Three_cjs['default'] : Three_cjs;
+
+    /**
+     * @author baptistewagner & lucassort
+     */
+    function IcosahedronBufferGeometry( radius, subdivisionsLevel ) {
+
+    	Three_cjs.BufferGeometry.call( this );
+
+    	this.type = 'IcosahedronBufferGeometry';
+
+    	this.parameters = {
+    		radius: radius,
+    		subdivisionsLevel: subdivisionsLevel
+    	};
+
+    	radius = radius || 10;
+
+    	var vertex = new Three_cjs.Vector3();
+    	var normal = new Three_cjs.Vector3();
+
+    	// buffers
+
+    	var indices = [];
+    	var vertices = [];
+    	var normals = [];
+        var uvs = [];
+        
+        verticesInit();
+        trianglesInit();
+        refineTriangles();
+        initNormals();
+        initUVs();    
+
+    	this.setIndex( indices );
+    	this.addAttribute( 'position', new Three_cjs.Float32BufferAttribute( vertices, 3 ) );
+    	this.addAttribute( 'normal', new Three_cjs.Float32BufferAttribute( normals, 3 ) );
+    	this.addAttribute( 'uv', new Three_cjs.Float32BufferAttribute( uvs, 2 ) );
+
+    	function verticesInit() {
+            // create 12 vertices of a icosahedron
+            var t = (1.0 + Math.sqrt(5.0)) / 2.0;
+
+            addPoint(-1,  t,  0);
+            addPoint( 1,  t,  0);
+            addPoint(-1, -t,  0);
+            addPoint( 1, -t,  0);
+
+            addPoint( 0, -1,  t);
+            addPoint( 0,  1,  t);
+            addPoint( 0, -1, -t);
+            addPoint( 0,  1, -t);
+
+            addPoint( t,  0, -1);
+            addPoint( t,  0,  1);
+            addPoint(-t,  0, -1);
+            addPoint(-t,  0,  1);
+        }
+
+        function trianglesInit() {
+            indices.push(0, 11, 5);
+            indices.push(0, 5, 1);
+            indices.push(0, 1, 7);
+            indices.push(0, 7, 10);
+            indices.push(0, 10, 11);
+            
+            // 5 adjacent faces
+            indices.push(1, 5, 9);
+            indices.push(5, 11, 4);
+            indices.push(11, 10, 2);
+            indices.push(10, 7, 6);
+            indices.push(7, 1, 8);
+            
+            // 5 faces around point 3
+            indices.push(3, 9, 4);
+            indices.push(3, 4, 2);
+            indices.push(3, 2, 6);
+            indices.push(3, 6, 8);
+            indices.push(3, 8, 9);
+            
+            // 5 adjacent faces
+            indices.push(4, 9, 5);
+            indices.push(2, 4, 11);
+            indices.push(6, 2, 10);
+            indices.push(8, 6, 7);
+            indices.push(9, 8, 1);
+        }
+
+        function refineTriangles() {
+            for (var i = 0; i < subdivisionsLevel - 1; i++) {
+    			var indices2 = [];
+                for (let index = 0; index < indices.length; index += 3) {
+                    // replace triangle by 4 triangles
+                    let a = indices[index];
+                    let b = indices[index + 1];
+    				let c = indices[index + 2];
+    				
+    				addMiddlePoint(a, b);
+                    addMiddlePoint(b, c);
+                    addMiddlePoint(c, a);
+    				
+    				let nVertices = vertices.length / 3;
+
+                    indices2.push(a, nVertices - 3, nVertices - 1);
+                    indices2.push(b, nVertices - 2, nVertices - 3);
+                    indices2.push(c, nVertices - 1, nVertices - 2);
+                    indices2.push(nVertices - 3, nVertices - 2, nVertices - 1);
+                }
+                indices = indices2;
+            }
+    	}
+    	
+    	// return index of point in the middle of p1 and p2
+        function addMiddlePoint(id1, id2) {
+            let point1 = new Three_cjs.Vector3(vertices[3 * id1], vertices[3 * id1 + 1], vertices[3 * id1 + 2]);
+    		let point2 = new Three_cjs.Vector3(vertices[3 * id2], vertices[3 * id2 + 1], vertices[3 * id2 + 2]);
+            
+            let middle = new Three_cjs.Vector3(
+                (point1.x + point2.x) / 2.0, 
+                (point1.y + point2.y) / 2.0, 
+                (point1.z + point2.z) / 2.0);
+
+    		addPoint(middle.x, middle.y, middle.z);
+        }
+
+        function initNormals() {
+            for (let index = 0; index < vertices.length; index += 3) {
+                let x = vertices[index];
+                let y = vertices[index + 1];
+    			let z = vertices[index + 2];
+    			
+                normal.set( x, y, z ).normalize();
+                normals.push( normal.x, normal.y, normal.z );
+            }
+        }
+        
+        function initUVs() {
+            let u = 0.0;
+            let v = 0.0;
+            for (let index = 0; index < vertices.length; index += 3) {
+                let x = vertices[index];
+                let y = vertices[index + 1];
+                let z = vertices[index + 2];
+                
+                u = 0.5 + Math.atan2(z, x) / (2 * Math.PI);
+                v = 0.5 - Math.asin(y) / (Math.PI);
+
+                uvs.push(u, v);
+            }
+        }
+    	
+    	function addPoint(x, y, z) {
 
-	/**
-	 * @author baptistewagner & lucassort
-	 */
-	function NormalizedCubeBufferGeometry( radius, widthHeightSegments ) {
+    		vertex = new Three_cjs.Vector3(x, y, z);
+
+    		vertex.normalize();
+
+    		vertex.x *= radius;
+            vertex.y *= radius;
+    		vertex.z *= radius;
+    		
+    		vertices.push(vertex.x, vertex.y, vertex.z);
+    	}
 
-		Three_cjs.BufferGeometry.call( this );
+    }
+
+    IcosahedronBufferGeometry.prototype = Object.create( Three_cjs.BufferGeometry.prototype );
+    IcosahedronBufferGeometry.prototype.constructor = IcosahedronBufferGeometry;
 
-		this.type = 'NormalizedCubeBufferGeometry';
+    var IcosahedronBufferGeometry_1 = IcosahedronBufferGeometry;
 
-		this.parameters = {
-			radius: radius,
-			widthHeightSegments: widthHeightSegments
-		};
+    function SpherifiedCubeBufferGeometry( radius, widthHeightSegments ) {
 
-		var scope = this;
+    	Three_cjs.BufferGeometry.call( this );
 
-		// generate cube
+    	this.type = 'SpherifiedCubeBufferGeometry';
 
-		radius = radius || 1;
+    	this.parameters = {
+    		radius: radius,
+    		widthHeightSegments: widthHeightSegments
+    	};
 
-		widthHeightSegments = Math.max( 3, Math.floor( widthHeightSegments ) || 8 );
-		var depth = 1;
-		var height = 1;
-		var width = 1;
+    	var scope = this;
 
-		var vertex = new Three_cjs.Vector3();
-		var normal = new Three_cjs.Vector3();
+    	// generate cube
 
-		var numberOfVertices = 0;
-		var groupStart = 0;
+    	radius = radius || 1;
 
-		// buffers
+    	widthHeightSegments = Math.max( 3, Math.floor( widthHeightSegments ) || 8 );
+    	var depth = 1;
+    	var height = 1;
+    	var width = 1;
 
-		var indices = [];
-		var vertices = [];
-		var uvs = [];
+    	var vertex = new Three_cjs.Vector3();
+    	var vertex2 = new Three_cjs.Vector3();
+    	var normal = new Three_cjs.Vector3();
 
-		// building the cube the same way as in BoxBufferGeometry
+    	var numberOfVertices = 0;
+    	var groupStart = 0;
 
-		buildPlane( 'z', 'y', 'x', - 1, - 1, depth, height, width, widthHeightSegments, widthHeightSegments, 0 ); // px
-		buildPlane( 'z', 'y', 'x', 1, - 1, depth, height, - width, widthHeightSegments, widthHeightSegments, 1 ); // nx
-		buildPlane( 'x', 'z', 'y', 1, 1, width, depth, height, widthHeightSegments, widthHeightSegments, 2 ); // py
-		buildPlane( 'x', 'z', 'y', 1, - 1, width, depth, - height, widthHeightSegments, widthHeightSegments, 3 ); // ny
-		buildPlane( 'x', 'y', 'z', 1, - 1, width, height, depth, widthHeightSegments, widthHeightSegments, 4 ); // pz
-		buildPlane( 'x', 'y', 'z', - 1, - 1, width, height, - depth, widthHeightSegments, widthHeightSegments, 5 ); // nz
+    	// buffers
 
-		// then normalizing the cube to have a sphere 
+    	var indices = [];
+    	var vertices = [];
+    	var uvs = [];
 
-		var vIndex;
+    	// building the cube the same way as in BoxBufferGeometry
 
-		var verticesSphere = [];
-		var normalsSphere = [];
+    	buildPlane( 'z', 'y', 'x', - 1, - 1, depth, height, width, widthHeightSegments, widthHeightSegments, 0 ); // px
+    	buildPlane( 'z', 'y', 'x', 1, - 1, depth, height, - width, widthHeightSegments, widthHeightSegments, 1 ); // nx
+    	buildPlane( 'x', 'z', 'y', 1, 1, width, depth, height, widthHeightSegments, widthHeightSegments, 2 ); // py
+    	buildPlane( 'x', 'z', 'y', 1, - 1, width, depth, - height, widthHeightSegments, widthHeightSegments, 3 ); // ny
+    	buildPlane( 'x', 'y', 'z', 1, - 1, width, height, depth, widthHeightSegments, widthHeightSegments, 4 ); // pz
+    	buildPlane( 'x', 'y', 'z', - 1, - 1, width, height, - depth, widthHeightSegments, widthHeightSegments, 5 ); // nz
 
-		// generate vertices, normals and uvs
+    	// then normalizing the cube to have a sphere 
 
-		for (vIndex = 0; vIndex < vertices.length; vIndex += 3) {
+    	var vIndex;
 
+    	var verticesSphere = [];
+    	var normalsSphere = [];
 
-			vertex.x = vertices[vIndex];
-			vertex.y = vertices[vIndex + 1];
-			vertex.z = vertices[vIndex + 2];
+    	// generate vertices, normals and uvs
 
-			// normalize to have sphere vertex
+    	for (vIndex = 0; vIndex < vertices.length; vIndex += 3) {
 
-	        vertex.normalize();
-	        vertex.x *= radius;
-	        vertex.y *= radius;
-	        vertex.z *= radius;
-			verticesSphere.push( vertex.x, vertex.y, vertex.z );
 
-			// normal
+    		vertex.x = vertices[vIndex] *  2.0;
+    		vertex.y = vertices[vIndex + 1] * 2.0;
+    		vertex.z = vertices[vIndex + 2] * 2.0;
 
-			normal.set( vertex.x, vertex.y, vertex.z ).normalize();
-			normalsSphere.push( normal.x, normal.y, normal.z );
+    		// normalize to have sphere vertex
+    		        
+    		vertex2.x = vertex.x ** 2;
+    		vertex2.y = vertex.y ** 2;
+    		vertex2.z = vertex.z ** 2;
+    	
+            vertex.x *= Math.sqrt(1.0 - 0.5 * (vertex2.y + vertex2.z) + vertex2.y * vertex2.z/3.0) * radius;
+            vertex.y *= Math.sqrt(1.0 - 0.5 * (vertex2.z + vertex2.x) + vertex2.z * vertex2.x/3.0) * radius;
+    		vertex.z *= Math.sqrt(1.0 - 0.5 * (vertex2.x + vertex2.y) + vertex2.x * vertex2.y/3.0) * radius;
 
-		}
+    		verticesSphere.push( vertex.x, vertex.y, vertex.z );
 
-		// build geometry
+    		// normal
 
-		this.setIndex( indices );
-		this.addAttribute( 'position', new Three_cjs.Float32BufferAttribute( verticesSphere, 3 ) );
-		this.addAttribute( 'normal', new Three_cjs.Float32BufferAttribute( normalsSphere, 3 ) );
-		this.addAttribute( 'uv', new Three_cjs.Float32BufferAttribute( uvs, 2 ) );
+    		normal.set( vertex.x, vertex.y, vertex.z ).normalize();
+    		normalsSphere.push( normal.x, normal.y, normal.z );
 
-		function buildPlane( u, v, w, udir, vdir, width, height, depth, gridX, gridY, materialIndex ) {
+    	}
 
-			var segmentWidth = width / gridX;
-			var segmentHeight = height / gridY;
+    	// build geometry
 
-			var widthHalf = width / 2;
-			var heightHalf = height / 2;
-			var depthHalf = depth / 2;
+    	this.setIndex( indices );
+    	this.addAttribute( 'position', new Three_cjs.Float32BufferAttribute( verticesSphere, 3 ) );
+    	this.addAttribute( 'normal', new Three_cjs.Float32BufferAttribute( normalsSphere, 3 ) );
+    	this.addAttribute( 'uv', new Three_cjs.Float32BufferAttribute( uvs, 2 ) );
 
-			var gridX1 = gridX + 1;
-			var gridY1 = gridY + 1;
+    	function buildPlane( u, v, w, udir, vdir, width, height, depth, gridX, gridY, materialIndex ) {
 
-			var vertexCounter = 0;
-			var groupCount = 0;
+    		var segmentWidth = width / gridX;
+    		var segmentHeight = height / gridY;
 
-			var ix, iy;
+    		var widthHalf = width / 2;
+    		var heightHalf = height / 2;
+    		var depthHalf = depth / 2;
 
-			var vector = new Three_cjs.Vector3();
+    		var gridX1 = gridX + 1;
+    		var gridY1 = gridY + 1;
 
-			// generate vertices, normals and uvs
+    		var vertexCounter = 0;
+    		var groupCount = 0;
 
-			for ( iy = 0; iy < gridY1; iy ++ ) {
+    		var ix, iy;
 
-				var y = iy * segmentHeight - heightHalf;
+    		var vector = new Three_cjs.Vector3();
 
-				for ( ix = 0; ix < gridX1; ix ++ ) {
+    		// generate vertices, normals and uvs
 
-					var x = ix * segmentWidth - widthHalf;
+    		for ( iy = 0; iy < gridY1; iy ++ ) {
 
-					// set values to correct vector component
+    			var y = iy * segmentHeight - heightHalf;
 
-					vector[ u ] = x * udir;
-					vector[ v ] = y * vdir;
-					vector[ w ] = depthHalf;
+    			for ( ix = 0; ix < gridX1; ix ++ ) {
 
-					// now apply vector to vertex buffer
+    				var x = ix * segmentWidth - widthHalf;
 
-					vertices.push( vector.x, vector.y, vector.z );
+    				// set values to correct vector component
 
-					// set values to correct vector component
+    				vector[ u ] = x * udir;
+    				vector[ v ] = y * vdir;
+    				vector[ w ] = depthHalf;
 
-					vector[ u ] = 0;
-					vector[ v ] = 0;
-					vector[ w ] = depth > 0 ? 1 : - 1;
+    				// now apply vector to vertex buffer
 
-					// uvs
+    				vertices.push( vector.x, vector.y, vector.z );
 
-					uvs.push( ix / gridX );
-					uvs.push( 1 - ( iy / gridY ) );
+    				// set values to correct vector component
 
-					// counters
+    				vector[ u ] = 0;
+    				vector[ v ] = 0;
+    				vector[ w ] = depth > 0 ? 1 : - 1;
 
-					vertexCounter += 1;
+    				// uvs
 
-				}
+    				uvs.push( ix / gridX );
+    				uvs.push( 1 - ( iy / gridY ) );
 
-			}
+    				// counters
 
-			// indices
+    				vertexCounter += 1;
 
-			// 1. you need three indices to draw a single face
-			// 2. a single segment consists of two faces
-			// 3. so we need to generate six (2*3) indices per segment
+    			}
 
-			for ( iy = 0; iy < gridY; iy ++ ) {
+    		}
 
-				for ( ix = 0; ix < gridX; ix ++ ) {
+    		// indices
 
-					var a = numberOfVertices + ix + gridX1 * iy;
-					var b = numberOfVertices + ix + gridX1 * ( iy + 1 );
-					var c = numberOfVertices + ( ix + 1 ) + gridX1 * ( iy + 1 );
-					var d = numberOfVertices + ( ix + 1 ) + gridX1 * iy;
+    		// 1. you need three indices to draw a single face
+    		// 2. a single segment consists of two faces
+    		// 3. so we need to generate six (2*3) indices per segment
 
-					// faces
+    		for ( iy = 0; iy < gridY; iy ++ ) {
 
-					indices.push( a, b, d );
-					indices.push( b, c, d );
+    			for ( ix = 0; ix < gridX; ix ++ ) {
 
-					// increase counter
+    				var a = numberOfVertices + ix + gridX1 * iy;
+    				var b = numberOfVertices + ix + gridX1 * ( iy + 1 );
+    				var c = numberOfVertices + ( ix + 1 ) + gridX1 * ( iy + 1 );
+    				var d = numberOfVertices + ( ix + 1 ) + gridX1 * iy;
 
-					groupCount += 6;
+    				// faces
 
-				}
+    				indices.push( a, b, d );
+    				indices.push( b, c, d );
 
-			}
+    				// increase counter
 
-			// add a group to the geometry. this will ensure multi material support
+    				groupCount += 6;
 
-			scope.addGroup( groupStart, groupCount, materialIndex );
+    			}
 
-			// calculate new start value for groups
+    		}
 
-			groupStart += groupCount;
+    		// add a group to the geometry. this will ensure multi material support
 
-			// update total number of vertices
+    		scope.addGroup( groupStart, groupCount, materialIndex );
 
-			numberOfVertices += vertexCounter;
+    		// calculate new start value for groups
 
-		}
+    		groupStart += groupCount;
 
-	}
+    		// update total number of vertices
 
-	NormalizedCubeBufferGeometry.prototype = Object.create( Three_cjs.BufferGeometry.prototype );
-	NormalizedCubeBufferGeometry.prototype.constructor = NormalizedCubeBufferGeometry;
+    		numberOfVertices += vertexCounter;
 
-	var NormalizedCubeBufferGeometry_1 = NormalizedCubeBufferGeometry;
+    	}
 
-	/**
-	 * @author baptistewagner & lucassort
-	 */
-	function IcosahedronBufferGeometry( radius, subdivisionsLevel ) {
+    }
 
-		Three_cjs.BufferGeometry.call( this );
+    SpherifiedCubeBufferGeometry.prototype = Object.create( Three_cjs.BufferGeometry.prototype );
+    SpherifiedCubeBufferGeometry.prototype.constructor = SpherifiedCubeBufferGeometry;
 
-		this.type = 'IcosahedronBufferGeometry';
+    var SpherifiedCubeBufferGeometry_1 = SpherifiedCubeBufferGeometry;
 
-		this.parameters = {
-			radius: radius,
-			subdivisionsLevel: subdivisionsLevel
-		};
+    /**
+     * @author baptistewagner & lucassort
+     */
+    function NormalizedCubeBufferGeometry( radius, widthHeightSegments ) {
 
-		radius = radius || 10;
+    	Three_cjs.BufferGeometry.call( this );
 
-		var vertex = new Three_cjs.Vector3();
-		var normal = new Three_cjs.Vector3();
+    	this.type = 'NormalizedCubeBufferGeometry';
 
-		// buffers
+    	this.parameters = {
+    		radius: radius,
+    		widthHeightSegments: widthHeightSegments
+    	};
 
-		var indices = [];
-		var vertices = [];
-		var normals = [];
-	    var uvs = [];
-	    
-	    verticesInit();
-	    trianglesInit();
-	    refineTriangles();
-	    initNormals();
-	    initUVs();    
+    	var scope = this;
 
-		this.setIndex( indices );
-		this.addAttribute( 'position', new Three_cjs.Float32BufferAttribute( vertices, 3 ) );
-		this.addAttribute( 'normal', new Three_cjs.Float32BufferAttribute( normals, 3 ) );
-		this.addAttribute( 'uv', new Three_cjs.Float32BufferAttribute( uvs, 2 ) );
+    	// generate cube
 
-		function verticesInit() {
-	        // create 12 vertices of a icosahedron
-	        var t = (1.0 + Math.sqrt(5.0)) / 2.0;
-
-	        addPoint(-1,  t,  0);
-	        addPoint( 1,  t,  0);
-	        addPoint(-1, -t,  0);
-	        addPoint( 1, -t,  0);
-
-	        addPoint( 0, -1,  t);
-	        addPoint( 0,  1,  t);
-	        addPoint( 0, -1, -t);
-	        addPoint( 0,  1, -t);
-
-	        addPoint( t,  0, -1);
-	        addPoint( t,  0,  1);
-	        addPoint(-t,  0, -1);
-	        addPoint(-t,  0,  1);
-	    }
-
-	    function trianglesInit() {
-	        indices.push(0, 11, 5);
-	        indices.push(0, 5, 1);
-	        indices.push(0, 1, 7);
-	        indices.push(0, 7, 10);
-	        indices.push(0, 10, 11);
-	        
-	        // 5 adjacent faces
-	        indices.push(1, 5, 9);
-	        indices.push(5, 11, 4);
-	        indices.push(11, 10, 2);
-	        indices.push(10, 7, 6);
-	        indices.push(7, 1, 8);
-	        
-	        // 5 faces around point 3
-	        indices.push(3, 9, 4);
-	        indices.push(3, 4, 2);
-	        indices.push(3, 2, 6);
-	        indices.push(3, 6, 8);
-	        indices.push(3, 8, 9);
-	        
-	        // 5 adjacent faces
-	        indices.push(4, 9, 5);
-	        indices.push(2, 4, 11);
-	        indices.push(6, 2, 10);
-	        indices.push(8, 6, 7);
-	        indices.push(9, 8, 1);
-	    }
+    	radius = radius || 1;
 
-	    function refineTriangles() {
-	        for (var i = 0; i < subdivisionsLevel - 1; i++) {
-				var indices2 = [];
-	            for (let index = 0; index < indices.length; index += 3) {
-	                // replace triangle by 4 triangles
-	                let a = indices[index];
-	                let b = indices[index + 1];
-					let c = indices[index + 2];
-					
-					addMiddlePoint(a, b);
-	                addMiddlePoint(b, c);
-	                addMiddlePoint(c, a);
-					
-					let nVertices = vertices.length / 3;
+    	widthHeightSegments = Math.max( 3, Math.floor( widthHeightSegments ) || 8 );
+    	var depth = 1;
+    	var height = 1;
+    	var width = 1;
 
-	                indices2.push(a, nVertices - 3, nVertices - 1);
-	                indices2.push(b, nVertices - 2, nVertices - 3);
-	                indices2.push(c, nVertices - 1, nVertices - 2);
-	                indices2.push(nVertices - 3, nVertices - 2, nVertices - 1);
-	            }
-	            indices = indices2;
-	        }
-		}
-		
-		// return index of point in the middle of p1 and p2
-	    function addMiddlePoint(id1, id2) {
-	        let point1 = new Three_cjs.Vector3(vertices[3 * id1], vertices[3 * id1 + 1], vertices[3 * id1 + 2]);
-			let point2 = new Three_cjs.Vector3(vertices[3 * id2], vertices[3 * id2 + 1], vertices[3 * id2 + 2]);
-	        
-	        let middle = new Three_cjs.Vector3(
-	            (point1.x + point2.x) / 2.0, 
-	            (point1.y + point2.y) / 2.0, 
-	            (point1.z + point2.z) / 2.0);
+    	var vertex = new Three_cjs.Vector3();
+    	var normal = new Three_cjs.Vector3();
 
-			addPoint(middle.x, middle.y, middle.z);
-	    }
+    	var numberOfVertices = 0;
+    	var groupStart = 0;
 
-	    function initNormals() {
-	        for (let index = 0; index < vertices.length; index += 3) {
-	            let x = vertices[index];
-	            let y = vertices[index + 1];
-				let z = vertices[index + 2];
-				
-	            normal.set( x, y, z ).normalize();
-	            normals.push( normal.x, normal.y, normal.z );
-	        }
-	    }
-	    
-	    function initUVs() {
-	        let u = 0.0;
-	        let v = 0.0;
-	        for (let index = 0; index < vertices.length; index += 3) {
-	            let x = vertices[index];
-	            let y = vertices[index + 1];
-	            let z = vertices[index + 2];
-	            
-	            u = 0.5 + Math.atan2(z, x) / (2 * Math.PI);
-	            v = 0.5 - Math.asin(y) / (Math.PI);
+    	// buffers
 
-	            uvs.push(u, v);
-	        }
-	    }
-		
-		function addPoint(x, y, z) {
+    	var indices = [];
+    	var vertices = [];
+    	var uvs = [];
 
-			vertex = new Three_cjs.Vector3(x, y, z);
+    	// building the cube the same way as in BoxBufferGeometry
 
-			vertex.normalize();
+    	buildPlane( 'z', 'y', 'x', - 1, - 1, depth, height, width, widthHeightSegments, widthHeightSegments, 0 ); // px
+    	buildPlane( 'z', 'y', 'x', 1, - 1, depth, height, - width, widthHeightSegments, widthHeightSegments, 1 ); // nx
+    	buildPlane( 'x', 'z', 'y', 1, 1, width, depth, height, widthHeightSegments, widthHeightSegments, 2 ); // py
+    	buildPlane( 'x', 'z', 'y', 1, - 1, width, depth, - height, widthHeightSegments, widthHeightSegments, 3 ); // ny
+    	buildPlane( 'x', 'y', 'z', 1, - 1, width, height, depth, widthHeightSegments, widthHeightSegments, 4 ); // pz
+    	buildPlane( 'x', 'y', 'z', - 1, - 1, width, height, - depth, widthHeightSegments, widthHeightSegments, 5 ); // nz
 
-			vertex.x *= radius;
-	        vertex.y *= radius;
-			vertex.z *= radius;
-			
-			vertices.push(vertex.x, vertex.y, vertex.z);
-		}
+    	// then normalizing the cube to have a sphere 
 
-	}
+    	var vIndex;
 
-	IcosahedronBufferGeometry.prototype = Object.create( Three_cjs.BufferGeometry.prototype );
-	IcosahedronBufferGeometry.prototype.constructor = IcosahedronBufferGeometry;
+    	var verticesSphere = [];
+    	var normalsSphere = [];
 
-	var IcosahedronBufferGeometry_1 = IcosahedronBufferGeometry;
+    	// generate vertices, normals and uvs
 
-	function SpherifiedCubeBufferGeometry( radius, widthHeightSegments ) {
+    	for (vIndex = 0; vIndex < vertices.length; vIndex += 3) {
 
-		Three_cjs.BufferGeometry.call( this );
 
-		this.type = 'SpherifiedCubeBufferGeometry';
+    		vertex.x = vertices[vIndex];
+    		vertex.y = vertices[vIndex + 1];
+    		vertex.z = vertices[vIndex + 2];
 
-		this.parameters = {
-			radius: radius,
-			widthHeightSegments: widthHeightSegments
-		};
+    		// normalize to have sphere vertex
 
-		var scope = this;
+            vertex.normalize();
+            vertex.x *= radius;
+            vertex.y *= radius;
+            vertex.z *= radius;
+    		verticesSphere.push( vertex.x, vertex.y, vertex.z );
 
-		// generate cube
+    		// normal
 
-		radius = radius || 1;
+    		normal.set( vertex.x, vertex.y, vertex.z ).normalize();
+    		normalsSphere.push( normal.x, normal.y, normal.z );
 
-		widthHeightSegments = Math.max( 3, Math.floor( widthHeightSegments ) || 8 );
-		var depth = 1;
-		var height = 1;
-		var width = 1;
+    	}
 
-		var vertex = new Three_cjs.Vector3();
-		var vertex2 = new Three_cjs.Vector3();
-		var normal = new Three_cjs.Vector3();
+    	// build geometry
 
-		var numberOfVertices = 0;
-		var groupStart = 0;
+    	this.setIndex( indices );
+    	this.addAttribute( 'position', new Three_cjs.Float32BufferAttribute( verticesSphere, 3 ) );
+    	this.addAttribute( 'normal', new Three_cjs.Float32BufferAttribute( normalsSphere, 3 ) );
+    	this.addAttribute( 'uv', new Three_cjs.Float32BufferAttribute( uvs, 2 ) );
 
-		// buffers
+    	function buildPlane( u, v, w, udir, vdir, width, height, depth, gridX, gridY, materialIndex ) {
 
-		var indices = [];
-		var vertices = [];
-		var uvs = [];
+    		var segmentWidth = width / gridX;
+    		var segmentHeight = height / gridY;
 
-		// building the cube the same way as in BoxBufferGeometry
+    		var widthHalf = width / 2;
+    		var heightHalf = height / 2;
+    		var depthHalf = depth / 2;
 
-		buildPlane( 'z', 'y', 'x', - 1, - 1, depth, height, width, widthHeightSegments, widthHeightSegments, 0 ); // px
-		buildPlane( 'z', 'y', 'x', 1, - 1, depth, height, - width, widthHeightSegments, widthHeightSegments, 1 ); // nx
-		buildPlane( 'x', 'z', 'y', 1, 1, width, depth, height, widthHeightSegments, widthHeightSegments, 2 ); // py
-		buildPlane( 'x', 'z', 'y', 1, - 1, width, depth, - height, widthHeightSegments, widthHeightSegments, 3 ); // ny
-		buildPlane( 'x', 'y', 'z', 1, - 1, width, height, depth, widthHeightSegments, widthHeightSegments, 4 ); // pz
-		buildPlane( 'x', 'y', 'z', - 1, - 1, width, height, - depth, widthHeightSegments, widthHeightSegments, 5 ); // nz
+    		var gridX1 = gridX + 1;
+    		var gridY1 = gridY + 1;
 
-		// then normalizing the cube to have a sphere 
+    		var vertexCounter = 0;
+    		var groupCount = 0;
 
-		var vIndex;
+    		var ix, iy;
 
-		var verticesSphere = [];
-		var normalsSphere = [];
+    		var vector = new Three_cjs.Vector3();
 
-		// generate vertices, normals and uvs
+    		// generate vertices, normals and uvs
 
-		for (vIndex = 0; vIndex < vertices.length; vIndex += 3) {
+    		for ( iy = 0; iy < gridY1; iy ++ ) {
 
+    			var y = iy * segmentHeight - heightHalf;
 
-			vertex.x = vertices[vIndex] *  2.0;
-			vertex.y = vertices[vIndex + 1] * 2.0;
-			vertex.z = vertices[vIndex + 2] * 2.0;
+    			for ( ix = 0; ix < gridX1; ix ++ ) {
 
-			// normalize to have sphere vertex
-			        
-			vertex2.x = vertex.x ** 2;
-			vertex2.y = vertex.y ** 2;
-			vertex2.z = vertex.z ** 2;
-		
-	        vertex.x *= Math.sqrt(1.0 - 0.5 * (vertex2.y + vertex2.z) + vertex2.y * vertex2.z/3.0) * radius;
-	        vertex.y *= Math.sqrt(1.0 - 0.5 * (vertex2.z + vertex2.x) + vertex2.z * vertex2.x/3.0) * radius;
-			vertex.z *= Math.sqrt(1.0 - 0.5 * (vertex2.x + vertex2.y) + vertex2.x * vertex2.y/3.0) * radius;
+    				var x = ix * segmentWidth - widthHalf;
 
-			verticesSphere.push( vertex.x, vertex.y, vertex.z );
+    				// set values to correct vector component
 
-			// normal
+    				vector[ u ] = x * udir;
+    				vector[ v ] = y * vdir;
+    				vector[ w ] = depthHalf;
 
-			normal.set( vertex.x, vertex.y, vertex.z ).normalize();
-			normalsSphere.push( normal.x, normal.y, normal.z );
+    				// now apply vector to vertex buffer
 
-		}
+    				vertices.push( vector.x, vector.y, vector.z );
 
-		// build geometry
+    				// set values to correct vector component
 
-		this.setIndex( indices );
-		this.addAttribute( 'position', new Three_cjs.Float32BufferAttribute( verticesSphere, 3 ) );
-		this.addAttribute( 'normal', new Three_cjs.Float32BufferAttribute( normalsSphere, 3 ) );
-		this.addAttribute( 'uv', new Three_cjs.Float32BufferAttribute( uvs, 2 ) );
+    				vector[ u ] = 0;
+    				vector[ v ] = 0;
+    				vector[ w ] = depth > 0 ? 1 : - 1;
 
-		function buildPlane( u, v, w, udir, vdir, width, height, depth, gridX, gridY, materialIndex ) {
+    				// uvs
 
-			var segmentWidth = width / gridX;
-			var segmentHeight = height / gridY;
+    				uvs.push( ix / gridX );
+    				uvs.push( 1 - ( iy / gridY ) );
 
-			var widthHalf = width / 2;
-			var heightHalf = height / 2;
-			var depthHalf = depth / 2;
+    				// counters
 
-			var gridX1 = gridX + 1;
-			var gridY1 = gridY + 1;
+    				vertexCounter += 1;
 
-			var vertexCounter = 0;
-			var groupCount = 0;
+    			}
 
-			var ix, iy;
+    		}
 
-			var vector = new Three_cjs.Vector3();
+    		// indices
 
-			// generate vertices, normals and uvs
+    		// 1. you need three indices to draw a single face
+    		// 2. a single segment consists of two faces
+    		// 3. so we need to generate six (2*3) indices per segment
 
-			for ( iy = 0; iy < gridY1; iy ++ ) {
+    		for ( iy = 0; iy < gridY; iy ++ ) {
 
-				var y = iy * segmentHeight - heightHalf;
+    			for ( ix = 0; ix < gridX; ix ++ ) {
 
-				for ( ix = 0; ix < gridX1; ix ++ ) {
+    				var a = numberOfVertices + ix + gridX1 * iy;
+    				var b = numberOfVertices + ix + gridX1 * ( iy + 1 );
+    				var c = numberOfVertices + ( ix + 1 ) + gridX1 * ( iy + 1 );
+    				var d = numberOfVertices + ( ix + 1 ) + gridX1 * iy;
 
-					var x = ix * segmentWidth - widthHalf;
+    				// faces
 
-					// set values to correct vector component
+    				indices.push( a, b, d );
+    				indices.push( b, c, d );
 
-					vector[ u ] = x * udir;
-					vector[ v ] = y * vdir;
-					vector[ w ] = depthHalf;
+    				// increase counter
 
-					// now apply vector to vertex buffer
+    				groupCount += 6;
 
-					vertices.push( vector.x, vector.y, vector.z );
+    			}
 
-					// set values to correct vector component
+    		}
 
-					vector[ u ] = 0;
-					vector[ v ] = 0;
-					vector[ w ] = depth > 0 ? 1 : - 1;
+    		// add a group to the geometry. this will ensure multi material support
 
-					// uvs
+    		scope.addGroup( groupStart, groupCount, materialIndex );
 
-					uvs.push( ix / gridX );
-					uvs.push( 1 - ( iy / gridY ) );
+    		// calculate new start value for groups
 
-					// counters
+    		groupStart += groupCount;
 
-					vertexCounter += 1;
+    		// update total number of vertices
 
-				}
+    		numberOfVertices += vertexCounter;
 
-			}
+    	}
 
-			// indices
+    }
 
-			// 1. you need three indices to draw a single face
-			// 2. a single segment consists of two faces
-			// 3. so we need to generate six (2*3) indices per segment
+    NormalizedCubeBufferGeometry.prototype = Object.create( Three_cjs.BufferGeometry.prototype );
+    NormalizedCubeBufferGeometry.prototype.constructor = NormalizedCubeBufferGeometry;
 
-			for ( iy = 0; iy < gridY; iy ++ ) {
+    var NormalizedCubeBufferGeometry_1 = NormalizedCubeBufferGeometry;
 
-				for ( ix = 0; ix < gridX; ix ++ ) {
+    var THREESphereBufferGeometries = {
+        IcosahedronBufferGeometry : IcosahedronBufferGeometry_1,
+        SpherifiedCubeBufferGeometry : SpherifiedCubeBufferGeometry_1,
+        NormalizedCubeBufferGeometry : NormalizedCubeBufferGeometry_1
+    };
 
-					var a = numberOfVertices + ix + gridX1 * iy;
-					var b = numberOfVertices + ix + gridX1 * ( iy + 1 );
-					var c = numberOfVertices + ( ix + 1 ) + gridX1 * ( iy + 1 );
-					var d = numberOfVertices + ( ix + 1 ) + gridX1 * iy;
+    THREE.IcosahedronBufferGeometry = THREESphereBufferGeometries.IcosahedronBufferGeometry;
+    THREE.SpherifiedCubeBufferGeometry = THREESphereBufferGeometries.SpherifiedCubeBufferGeometry;
+    THREE.NormalizedCubeBufferGeometry = THREESphereBufferGeometries.NormalizedCubeBufferGeometry;
 
-					// faces
+    var exports$1 = THREESphereBufferGeometries;
 
-					indices.push( a, b, d );
-					indices.push( b, c, d );
-
-					// increase counter
-
-					groupCount += 6;
-
-				}
-
-			}
-
-			// add a group to the geometry. this will ensure multi material support
-
-			scope.addGroup( groupStart, groupCount, materialIndex );
-
-			// calculate new start value for groups
-
-			groupStart += groupCount;
-
-			// update total number of vertices
-
-			numberOfVertices += vertexCounter;
-
-		}
-
-	}
-
-	SpherifiedCubeBufferGeometry.prototype = Object.create( Three_cjs.BufferGeometry.prototype );
-	SpherifiedCubeBufferGeometry.prototype.constructor = SpherifiedCubeBufferGeometry;
-
-	var SpherifiedCubeBufferGeometry_1 = SpherifiedCubeBufferGeometry;
-
-	THREE.NormalizedCubeBufferGeometry = NormalizedCubeBufferGeometry_1;
-
-	var exports$1 = NormalizedCubeBufferGeometry_1;
-
-
-
-
-	THREE.IcosahedronBufferGeometry = IcosahedronBufferGeometry_1;
-
-	var exports$1 = IcosahedronBufferGeometry_1;
-
-
-
-
-	THREE.SpherifiedCubeBufferGeometry = SpherifiedCubeBufferGeometry_1;
-
-	var exports$1 = SpherifiedCubeBufferGeometry_1;
-
-	var exports$2 = exports$1;
-
-	return exports$2;
+    return exports$1;
 
 })));
