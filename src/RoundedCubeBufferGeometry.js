@@ -18,11 +18,6 @@ function RoundedCubeBufferGeometry( radius, widthHeightSegments ) {
 
 	radius = radius || 1;
 
-	var ix, iy;
-	var depth = 1;
-	var height = 1;
-	var width = 1;
-
 	var vertex = new THREE.Vector3();
 	var normal = new THREE.Vector3();
 
@@ -61,9 +56,7 @@ function RoundedCubeBufferGeometry( radius, widthHeightSegments ) {
 		// normalize to have sphere vertex
 
         vertex.normalize();
-        vertex.x *= radius;
-        vertex.y *= radius;
-        vertex.z *= radius;
+        vertex.multiplyScalar(radius);
 		verticesSphere.push( vertex.x, vertex.y, vertex.z );
 
 		// normal
