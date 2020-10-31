@@ -1,4 +1,4 @@
-const THREE = require("three-full/builds/Three.cjs.js");
+const THREE = require("three-full");
 
 /**
  * @author baptistewagner & lucassort
@@ -9,14 +9,16 @@ function RoundedCubeBufferGeometry( radius, widthHeightSegments ) {
 
 	this.type = 'RoundedCubeBufferGeometry';
 
+	radius = radius || 1;
+
+	widthHeightSegments = widthHeightSegments || 8;
+
 	this.parameters = {
 		radius: radius,
 		widthHeightSegments: widthHeightSegments
 	};
 
 	var scope = this;
-
-	radius = radius || 1;
 
 	var vertex = new THREE.Vector3();
 	var normal = new THREE.Vector3();
@@ -37,7 +39,7 @@ function RoundedCubeBufferGeometry( radius, widthHeightSegments ) {
 	cubeBufferGeometry.getAttribute("uv").array.forEach(vertex => {uvs.push(vertex)});
 	cubeBufferGeometry.index.array.forEach(vertex => {indices.push(vertex)});
 
-	// then normalizing the cube to have a sphere 
+	// then normalizing the cube to have a sphere
 
 	var vIndex;
 

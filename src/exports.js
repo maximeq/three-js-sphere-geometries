@@ -1,4 +1,6 @@
 
+var THREE = require("three-full");
+
 var THREESphereBufferGeometries = {
     IcosahedronSphereBufferGeometry : require("./IcosahedronSphereBufferGeometry"),
     SpherifiedCubeBufferGeometry : require("./SpherifiedCubeBufferGeometry"),

@@ -33,13 +33,13 @@ async function build(inputOptions, outputOptions) {
 build({
     input: 'src/exports.js',
     plugins:  [ commonjs(), resolve() ],
-    external: [ 'three-full/builds/Three.cjs.js' ],
+    external: [ 'three-full' ],
 }, {
     format: 'umd',
     name: 'THREESphereGeometries',
     file: './dist/browser/three-js-sphere-geometries.js',
     globals: {
-        'three-full/builds/Three.cjs.js' : 'THREE'
+        'three-full' : 'THREE'
     }
 });
 
@@ -61,13 +61,13 @@ build({
           bracketSpacing:false
         })
     ],
-    external: [ 'three-full/builds/Three.cjs.js' ],
+    external: [ 'three-full' ],
 }, {
     format: 'umd',
     name: 'THREESphereGeometries',
     file: './dist/browser/three-js-sphere-geometries.min.js',
     globals: {
-        'three-full/builds/Three.cjs.js' : 'THREE'
+        'three-full' : 'THREE'
     }
 });
 

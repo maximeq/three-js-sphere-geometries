@@ -1,10 +1,14 @@
-const THREE = require("three-full/builds/Three.cjs.js");
+const THREE = require("three-full");
 
 function SpherifiedCubeBufferGeometry( radius, widthHeightSegments ) {
 
 	THREE.BufferGeometry.call( this );
 
 	this.type = 'SpherifiedCubeBufferGeometry';
+
+	radius = radius || 1;
+
+	widthHeightSegments = widthHeightSegments || 8;
 
 	this.parameters = {
 		radius: radius,
@@ -14,11 +18,6 @@ function SpherifiedCubeBufferGeometry( radius, widthHeightSegments ) {
 	var scope = this;
 
 	// generate cube
-
-	radius = radius || 1;
-
-	widthHeightSegments = Math.max( 3, Math.floor( widthHeightSegments ) || 8 );
-
 	var ix, iy;
 	var depth = 1;
 	var height = 1;
@@ -47,7 +46,7 @@ function SpherifiedCubeBufferGeometry( radius, widthHeightSegments ) {
 	cubeBufferGeometry.getAttribute("uv").array.forEach(vertex => {uvs.push(vertex)});
 	cubeBufferGeometry.index.array.forEach(vertex => {indices.push(vertex)});
 
-	// then normalizing the cube to have a sphere 
+	// then normalizing the cube to have a sphere
 
 	var vIndex;
 
@@ -64,11 +63,11 @@ function SpherifiedCubeBufferGeometry( radius, widthHeightSegments ) {
 		vertex.z = vertices[vIndex + 2] * 2.0;
 
 		// normalize to have sphere vertex
-		        
+
 		vertex2.x = vertex.x ** 2;
 		vertex2.y = vertex.y ** 2;
 		vertex2.z = vertex.z ** 2;
-	
+
         vertex.x *= Math.sqrt(1.0 - 0.5 * (vertex2.y + vertex2.z) + vertex2.y * vertex2.z/3.0) * radius;
         vertex.y *= Math.sqrt(1.0 - 0.5 * (vertex2.z + vertex2.x) + vertex2.z * vertex2.x/3.0) * radius;
 		vertex.z *= Math.sqrt(1.0 - 0.5 * (vertex2.x + vertex2.y) + vertex2.x * vertex2.y/3.0) * radius;

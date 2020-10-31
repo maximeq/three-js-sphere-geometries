@@ -1,4 +1,4 @@
-const THREE = require("three-full/builds/Three.cjs.js");
+const THREE = require("three-full");
 
 /**
  * @author baptistewagner & lucassort
@@ -8,7 +8,7 @@ function IcosahedronSphereBufferGeometry( radius, subdivisionsLevel ) {
 	THREE.IcosahedronBufferGeometry.call( this, radius, subdivisionsLevel );
 
     this.type = 'IcosahedronSphereBufferGeometry';
-    
+
     var scope = this;
 }
 
