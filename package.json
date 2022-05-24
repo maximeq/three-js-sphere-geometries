@@ -1,6 +1,6 @@
 {
   "name": "three-js-sphere-geometries",
-  "version": "1.0.0",
+  "version": "1.130.0",
   "description": "3 different meshes for modelling spheres as new geometric primitives for THREE.JS.",
   "main": "src/exports.js",
   "scripts": {
@@ -10,7 +10,7 @@
     "start": "http-server -c-1 -o /examples/browser/basic.html"
   },
   "dependencies": {
-    "three-full": "16.0.1"
+    "three": "0.130.x"
   },
   "devDependencies": {
     "eslint": "^8.16.0",

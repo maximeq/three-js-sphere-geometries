@@ -1,5 +1,5 @@
 
-var THREE = require("three-full");
+var THREE = require("three");
 
 var THREESphereBufferGeometries = {
     IcosahedronSphereBufferGeometry : require("./IcosahedronSphereBufferGeometry"),

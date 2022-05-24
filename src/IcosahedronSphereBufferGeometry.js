@@ -1,18 +1,17 @@
-const THREE = require("three-full");
+const THREE = require("three");
 
 /**
  * @author baptistewagner & lucassort
  */
-function IcosahedronSphereBufferGeometry( radius, subdivisionsLevel ) {
 
-	THREE.IcosahedronBufferGeometry.call( this, radius, subdivisionsLevel );
+class IcosahedronSphereBufferGeometry extends THREE.IcosahedronBufferGeometry {
+    constructor(radius, subdivisionsLevel) {
+        super(radius, subdivisionsLevel);
 
-    this.type = 'IcosahedronSphereBufferGeometry';
+        this.type = "IcosahedronSphereBufferGeometry";
 
-    var scope = this;
+        var scope = this;
+    }
 }
-
-IcosahedronSphereBufferGeometry.prototype = Object.create( THREE.BufferGeometry.prototype );
-IcosahedronSphereBufferGeometry.prototype.constructor = IcosahedronSphereBufferGeometry;
 
 module.exports = IcosahedronSphereBufferGeometry;
