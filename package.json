@@ -13,15 +13,16 @@
     "three-full": "16.0.1"
   },
   "devDependencies": {
-    "http-server": "^0.12.3",
-    "eslint": "^4.11.0",
+    "eslint": "^8.16.0",
     "fs-extra": "^7.0.1",
+    "http-server": "^0.12.3",
     "jsdoc-api": "^4.0.3",
+    "prettier": "^2.6.2",
     "rollup": "^0.67.1",
     "rollup-plugin-commonjs": "^9.2.0",
     "rollup-plugin-node-resolve": "^3.4.0",
-    "rollup-plugin-terser": "^3.0.0",
-    "rollup-plugin-prettier": "^0.6.0"
+    "rollup-plugin-prettier": "^0.6.0",
+    "rollup-plugin-terser": "^3.0.0"
   },
   "files": [
     "src/*",
