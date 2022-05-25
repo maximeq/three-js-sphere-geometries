@@ -1,6 +1,6 @@
 {
   "name": "three-js-sphere-geometries",
-  "version": "1.130.0",
+  "version": "2.130.0",
   "description": "3 different meshes for modelling spheres as new geometric primitives for THREE.JS.",
   "main": "src/exports.js",
   "scripts": {
