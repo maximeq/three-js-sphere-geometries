@@ -1,10 +1,10 @@
-const THREE = require("three");
+import THREE from 'three';
 
 /**
  * @author baptistewagner & lucassort
  */
 
-class IcosahedronSphereBufferGeometry extends THREE.IcosahedronBufferGeometry {
+export class IcosahedronSphereBufferGeometry extends THREE.IcosahedronBufferGeometry {
     constructor(radius, subdivisionsLevel) {
         super(radius, subdivisionsLevel);
 
@@ -13,5 +13,3 @@ class IcosahedronSphereBufferGeometry extends THREE.IcosahedronBufferGeometry {
         var scope = this;
     }
 }
-
-module.exports = IcosahedronSphereBufferGeometry;

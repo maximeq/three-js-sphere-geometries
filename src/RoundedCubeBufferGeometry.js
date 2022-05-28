@@ -1,10 +1,10 @@
-const THREE = require("three");
+import THREE from 'three';
 
 /**
  * @author baptistewagner & lucassort
  */
 
-class RoundedCubeBufferGeometry extends THREE.BufferGeometry {
+export class RoundedCubeBufferGeometry extends THREE.BufferGeometry {
     constructor(radius, widthHeightSegments) {
         super();
 
@@ -42,18 +42,25 @@ class RoundedCubeBufferGeometry extends THREE.BufferGeometry {
             widthHeightSegments
         );
 
-        cubeBufferGeometry.getAttribute("position").array.forEach((vertex) => {
-            vertices.push(vertex);
-        });
-        cubeBufferGeometry.getAttribute("normal").array.forEach((vertex) => {
-            normals.push(vertex);
-        });
-        cubeBufferGeometry.getAttribute("uv").array.forEach((vertex) => {
-            uvs.push(vertex);
-        });
-        cubeBufferGeometry.index.array.forEach((vertex) => {
-            indices.push(vertex);
-        });
+        let positionArray = cubeBufferGeometry.getAttribute("position").array;
+        for (let i = 0; i < positionArray.length; ++i){
+            vertices.push(positionArray[i]);
+        }
+
+        let normalArray = cubeBufferGeometry.getAttribute("normal").array;
+        for (let i = 0; i < normalArray.length; ++i) {
+            normals.push(normalArray[i]);
+        }
+
+        let uvArray = cubeBufferGeometry.getAttribute("uv").array;
+        for (let i = 0; i < uvArray.length; ++i) {
+            uvs.push(uvArray[i]);
+        }
+
+        let indexArray = cubeBufferGeometry.index.array;
+        for (let i = 0; i < indexArray.length; ++i) {
+            indices.push(indexArray[i]);
+        }
 
         // then normalizing the cube to have a sphere
 
@@ -95,5 +102,3 @@ class RoundedCubeBufferGeometry extends THREE.BufferGeometry {
         this.setAttribute("uv", new THREE.Float32BufferAttribute(uvs, 2));
     }
 }
-
-module.exports = RoundedCubeBufferGeometry;

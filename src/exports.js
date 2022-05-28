@@ -1,15 +1,13 @@
 
-var THREE = require("three");
+import { IcosahedronSphereBufferGeometry } from "./IcosahedronSphereBufferGeometry";
+import { SpherifiedCubeBufferGeometry } from "./SpherifiedCubeBufferGeometry";
+import { RoundedCubeBufferGeometry } from "./RoundedCubeBufferGeometry";
 
-var THREESphereBufferGeometries = {
-    IcosahedronSphereBufferGeometry : require("./IcosahedronSphereBufferGeometry"),
-    SpherifiedCubeBufferGeometry : require("./SpherifiedCubeBufferGeometry"),
-    RoundedCubeBufferGeometry : require("./RoundedCubeBufferGeometry")
-};
+export { IcosahedronSphereBufferGeometry }
 
-THREE.IcosahedronSphereBufferGeometry = THREESphereBufferGeometries.IcosahedronSphereBufferGeometry;
-THREE.SpherifiedCubeBufferGeometry = THREESphereBufferGeometries.SpherifiedCubeBufferGeometry;
-THREE.RoundedCubeBufferGeometry = THREESphereBufferGeometries.RoundedCubeBufferGeometry;
 
-module.exports = THREESphereBufferGeometries;
+import THREE from 'three';
 
+THREE.IcosahedronSphereBufferGeometry = IcosahedronSphereBufferGeometry;
+THREE.SpherifiedCubeBufferGeometry = SpherifiedCubeBufferGeometry;
+THREE.RoundedCubeBufferGeometry = RoundedCubeBufferGeometry;
