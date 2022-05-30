@@ -1,16 +1,15 @@
-(function (global, factory) {
-    typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('three')) :
-    typeof define === 'function' && define.amd ? define(['exports', 'three'], factory) :
-    (factory((global.THREESphereGeometries = {}),global.THREE));
-}(this, (function (exports,THREE) { 'use strict';
+var THREESphereGeometries = (function (exports, THREE) {
+    'use strict';
 
-    THREE = THREE && THREE.hasOwnProperty('default') ? THREE['default'] : THREE;
+    function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+    var THREE__default = /*#__PURE__*/_interopDefaultLegacy(THREE);
 
     /**
      * @author baptistewagner & lucassort
      */
 
-    class IcosahedronSphereBufferGeometry extends THREE.IcosahedronBufferGeometry {
+    class IcosahedronSphereBufferGeometry extends THREE__default["default"].IcosahedronBufferGeometry {
         constructor(radius, subdivisionsLevel) {
             super(radius, subdivisionsLevel);
 
@@ -18,7 +17,7 @@
         }
     }
 
-    class SpherifiedCubeBufferGeometry extends THREE.BufferGeometry {
+    class SpherifiedCubeBufferGeometry extends THREE__default["default"].BufferGeometry {
         constructor(radius, widthHeightSegments) {
             super();
 
@@ -33,9 +32,9 @@
                 widthHeightSegments: widthHeightSegments,
             };
 
-            var vertex = new THREE.Vector3();
-            var vertex2 = new THREE.Vector3();
-            var normal = new THREE.Vector3();
+            var vertex = new THREE__default["default"].Vector3();
+            var vertex2 = new THREE__default["default"].Vector3();
+            var normal = new THREE__default["default"].Vector3();
 
             // buffers
 
@@ -46,7 +45,7 @@
 
             // we create a normal cube and buffer it in our geometry
 
-            var cubeBufferGeometry = new THREE.BoxBufferGeometry(
+            var cubeBufferGeometry = new THREE__default["default"].BoxBufferGeometry(
                 1,
                 1,
                 1,
@@ -127,13 +126,13 @@
             this.setIndex(indices);
             this.setAttribute(
                 "position",
-                new THREE.Float32BufferAttribute(verticesSphere, 3)
+                new THREE__default["default"].Float32BufferAttribute(verticesSphere, 3)
             );
             this.setAttribute(
                 "normal",
-                new THREE.Float32BufferAttribute(normalsSphere, 3)
+                new THREE__default["default"].Float32BufferAttribute(normalsSphere, 3)
             );
-            this.setAttribute("uv", new THREE.Float32BufferAttribute(uvs, 2));
+            this.setAttribute("uv", new THREE__default["default"].Float32BufferAttribute(uvs, 2));
         }
     }
 
@@ -141,7 +140,7 @@
      * @author baptistewagner & lucassort
      */
 
-    class RoundedCubeBufferGeometry extends THREE.BufferGeometry {
+    class RoundedCubeBufferGeometry extends THREE__default["default"].BufferGeometry {
         constructor(radius, widthHeightSegments) {
             super();
 
@@ -156,8 +155,8 @@
                 widthHeightSegments: widthHeightSegments,
             };
 
-            var vertex = new THREE.Vector3();
-            var normal = new THREE.Vector3();
+            var vertex = new THREE__default["default"].Vector3();
+            var normal = new THREE__default["default"].Vector3();
 
             // buffers
 
@@ -168,7 +167,7 @@
 
             // we create a normal cube and buffer it in our geometry
 
-            var cubeBufferGeometry = new THREE.BoxBufferGeometry(
+            var cubeBufferGeometry = new THREE__default["default"].BoxBufferGeometry(
                 1,
                 1,
                 1,
@@ -228,22 +227,25 @@
             this.setIndex(indices);
             this.setAttribute(
                 "position",
-                new THREE.Float32BufferAttribute(verticesSphere, 3)
+                new THREE__default["default"].Float32BufferAttribute(verticesSphere, 3)
             );
             this.setAttribute(
                 "normal",
-                new THREE.Float32BufferAttribute(normalsSphere, 3)
+                new THREE__default["default"].Float32BufferAttribute(normalsSphere, 3)
             );
-            this.setAttribute("uv", new THREE.Float32BufferAttribute(uvs, 2));
+            this.setAttribute("uv", new THREE__default["default"].Float32BufferAttribute(uvs, 2));
         }
     }
 
-    THREE.IcosahedronSphereBufferGeometry = IcosahedronSphereBufferGeometry;
-    THREE.SpherifiedCubeBufferGeometry = SpherifiedCubeBufferGeometry;
-    THREE.RoundedCubeBufferGeometry = RoundedCubeBufferGeometry;
+    THREE__default["default"].IcosahedronSphereBufferGeometry = IcosahedronSphereBufferGeometry;
+    THREE__default["default"].SpherifiedCubeBufferGeometry = SpherifiedCubeBufferGeometry;
+    THREE__default["default"].RoundedCubeBufferGeometry = RoundedCubeBufferGeometry;
 
     exports.IcosahedronSphereBufferGeometry = IcosahedronSphereBufferGeometry;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 
-})));
+    return exports;
+
+})({}, THREE);
+//# sourceMappingURL=three-js-sphere-geometries.js.map
