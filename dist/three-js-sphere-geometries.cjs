@@ -2,11 +2,41 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var THREE = require('three');
+var THREE$1 = require('three');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
-var THREE__default = /*#__PURE__*/_interopDefaultLegacy(THREE);
+var THREE__default = /*#__PURE__*/_interopDefaultLegacy(THREE$1);
+
+function checkDependancy(packageName, dependancyName, dependancy) {
+    let duplicationMessage = `${packageName}: ${dependancyName} is duplicated. Your bundle includes ${dependancyName} twice. Please repair your bundle.`;
+    try {
+        if (THREE[dependancyName] === undefined) {
+            THREE[dependancyName] = dependancy;
+            return;
+        }
+
+        if (THREE[dependancyName] !== dependancy) {
+            throw duplicationMessage;
+        }
+    } catch (error) {
+        if (error !== duplicationMessage) {
+            console.warn(
+                `${packageName}: Duplication check unavailable.` + error
+            );
+        } else {
+            throw error;
+        }
+    }
+}
+
+function checkThreeRevision(packageName, revision) {
+    if (THREE.REVISION != revision) {
+        console.error(
+            `${packageName} depends on THREE revision ${revision}, but current revision is ${THREE.REVISION}.`
+        );
+    }
+}
 
 /**
  * @author baptistewagner & lucassort
@@ -240,8 +270,27 @@ class RoundedCubeBufferGeometry extends THREE__default["default"].BufferGeometry
     }
 }
 
-THREE__default["default"].IcosahedronSphereBufferGeometry = IcosahedronSphereBufferGeometry;
-THREE__default["default"].SpherifiedCubeBufferGeometry = SpherifiedCubeBufferGeometry;
-THREE__default["default"].RoundedCubeBufferGeometry = RoundedCubeBufferGeometry;
+var SphereGeometries = /*#__PURE__*/Object.freeze({
+    __proto__: null,
+    IcosahedronSphereBufferGeometry: IcosahedronSphereBufferGeometry,
+    SpherifiedCubeBufferGeometry: SpherifiedCubeBufferGeometry,
+    RoundedCubeBufferGeometry: RoundedCubeBufferGeometry
+});
+
+/*
+ * This file encapsulates the xthree library.
+ * It checks if the needed three examples and the library are duplicated.
+ */
+
+const PACKAGE_NAME = "three-js-sphere-geometries";
+
+checkThreeRevision(PACKAGE_NAME, 130);
+
+checkDependancy(PACKAGE_NAME, "SphereGeometries", SphereGeometries);
+checkDependancy(PACKAGE_NAME, "IcosahedronSphereBufferGeometry", IcosahedronSphereBufferGeometry);
+checkDependancy(PACKAGE_NAME, "SphereGeometSpherifiedCubeBufferGeometryries", SpherifiedCubeBufferGeometry);
+checkDependancy(PACKAGE_NAME, "RoundedCubeBufferGeometry", RoundedCubeBufferGeometry);
 
 exports.IcosahedronSphereBufferGeometry = IcosahedronSphereBufferGeometry;
+exports.RoundedCubeBufferGeometry = RoundedCubeBufferGeometry;
+exports.SpherifiedCubeBufferGeometry = SpherifiedCubeBufferGeometry;

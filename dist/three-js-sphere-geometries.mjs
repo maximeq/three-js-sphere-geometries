@@ -1,10 +1,40 @@
-import THREE from 'three';
+import THREE$1 from 'three';
+
+function checkDependancy(packageName, dependancyName, dependancy) {
+    let duplicationMessage = `${packageName}: ${dependancyName} is duplicated. Your bundle includes ${dependancyName} twice. Please repair your bundle.`;
+    try {
+        if (THREE[dependancyName] === undefined) {
+            THREE[dependancyName] = dependancy;
+            return;
+        }
+
+        if (THREE[dependancyName] !== dependancy) {
+            throw duplicationMessage;
+        }
+    } catch (error) {
+        if (error !== duplicationMessage) {
+            console.warn(
+                `${packageName}: Duplication check unavailable.` + error
+            );
+        } else {
+            throw error;
+        }
+    }
+}
+
+function checkThreeRevision(packageName, revision) {
+    if (THREE.REVISION != revision) {
+        console.error(
+            `${packageName} depends on THREE revision ${revision}, but current revision is ${THREE.REVISION}.`
+        );
+    }
+}
 
 /**
  * @author baptistewagner & lucassort
  */
 
-class IcosahedronSphereBufferGeometry extends THREE.IcosahedronBufferGeometry {
+class IcosahedronSphereBufferGeometry extends THREE$1.IcosahedronBufferGeometry {
     constructor(radius, subdivisionsLevel) {
         super(radius, subdivisionsLevel);
 
@@ -12,7 +42,7 @@ class IcosahedronSphereBufferGeometry extends THREE.IcosahedronBufferGeometry {
     }
 }
 
-class SpherifiedCubeBufferGeometry extends THREE.BufferGeometry {
+class SpherifiedCubeBufferGeometry extends THREE$1.BufferGeometry {
     constructor(radius, widthHeightSegments) {
         super();
 
@@ -27,9 +57,9 @@ class SpherifiedCubeBufferGeometry extends THREE.BufferGeometry {
             widthHeightSegments: widthHeightSegments,
         };
 
-        var vertex = new THREE.Vector3();
-        var vertex2 = new THREE.Vector3();
-        var normal = new THREE.Vector3();
+        var vertex = new THREE$1.Vector3();
+        var vertex2 = new THREE$1.Vector3();
+        var normal = new THREE$1.Vector3();
 
         // buffers
 
@@ -40,7 +70,7 @@ class SpherifiedCubeBufferGeometry extends THREE.BufferGeometry {
 
         // we create a normal cube and buffer it in our geometry
 
-        var cubeBufferGeometry = new THREE.BoxBufferGeometry(
+        var cubeBufferGeometry = new THREE$1.BoxBufferGeometry(
             1,
             1,
             1,
@@ -121,13 +151,13 @@ class SpherifiedCubeBufferGeometry extends THREE.BufferGeometry {
         this.setIndex(indices);
         this.setAttribute(
             "position",
-            new THREE.Float32BufferAttribute(verticesSphere, 3)
+            new THREE$1.Float32BufferAttribute(verticesSphere, 3)
         );
         this.setAttribute(
             "normal",
-            new THREE.Float32BufferAttribute(normalsSphere, 3)
+            new THREE$1.Float32BufferAttribute(normalsSphere, 3)
         );
-        this.setAttribute("uv", new THREE.Float32BufferAttribute(uvs, 2));
+        this.setAttribute("uv", new THREE$1.Float32BufferAttribute(uvs, 2));
     }
 }
 
@@ -135,7 +165,7 @@ class SpherifiedCubeBufferGeometry extends THREE.BufferGeometry {
  * @author baptistewagner & lucassort
  */
 
-class RoundedCubeBufferGeometry extends THREE.BufferGeometry {
+class RoundedCubeBufferGeometry extends THREE$1.BufferGeometry {
     constructor(radius, widthHeightSegments) {
         super();
 
@@ -150,8 +180,8 @@ class RoundedCubeBufferGeometry extends THREE.BufferGeometry {
             widthHeightSegments: widthHeightSegments,
         };
 
-        var vertex = new THREE.Vector3();
-        var normal = new THREE.Vector3();
+        var vertex = new THREE$1.Vector3();
+        var normal = new THREE$1.Vector3();
 
         // buffers
 
@@ -162,7 +192,7 @@ class RoundedCubeBufferGeometry extends THREE.BufferGeometry {
 
         // we create a normal cube and buffer it in our geometry
 
-        var cubeBufferGeometry = new THREE.BoxBufferGeometry(
+        var cubeBufferGeometry = new THREE$1.BoxBufferGeometry(
             1,
             1,
             1,
@@ -222,18 +252,35 @@ class RoundedCubeBufferGeometry extends THREE.BufferGeometry {
         this.setIndex(indices);
         this.setAttribute(
             "position",
-            new THREE.Float32BufferAttribute(verticesSphere, 3)
+            new THREE$1.Float32BufferAttribute(verticesSphere, 3)
         );
         this.setAttribute(
             "normal",
-            new THREE.Float32BufferAttribute(normalsSphere, 3)
+            new THREE$1.Float32BufferAttribute(normalsSphere, 3)
         );
-        this.setAttribute("uv", new THREE.Float32BufferAttribute(uvs, 2));
+        this.setAttribute("uv", new THREE$1.Float32BufferAttribute(uvs, 2));
     }
 }
 
-THREE.IcosahedronSphereBufferGeometry = IcosahedronSphereBufferGeometry;
-THREE.SpherifiedCubeBufferGeometry = SpherifiedCubeBufferGeometry;
-THREE.RoundedCubeBufferGeometry = RoundedCubeBufferGeometry;
+var SphereGeometries = /*#__PURE__*/Object.freeze({
+    __proto__: null,
+    IcosahedronSphereBufferGeometry: IcosahedronSphereBufferGeometry,
+    SpherifiedCubeBufferGeometry: SpherifiedCubeBufferGeometry,
+    RoundedCubeBufferGeometry: RoundedCubeBufferGeometry
+});
 
-export { IcosahedronSphereBufferGeometry };
+/*
+ * This file encapsulates the xthree library.
+ * It checks if the needed three examples and the library are duplicated.
+ */
+
+const PACKAGE_NAME = "three-js-sphere-geometries";
+
+checkThreeRevision(PACKAGE_NAME, 130);
+
+checkDependancy(PACKAGE_NAME, "SphereGeometries", SphereGeometries);
+checkDependancy(PACKAGE_NAME, "IcosahedronSphereBufferGeometry", IcosahedronSphereBufferGeometry);
+checkDependancy(PACKAGE_NAME, "SphereGeometSpherifiedCubeBufferGeometryries", SpherifiedCubeBufferGeometry);
+checkDependancy(PACKAGE_NAME, "RoundedCubeBufferGeometry", RoundedCubeBufferGeometry);
+
+export { IcosahedronSphereBufferGeometry, RoundedCubeBufferGeometry, SpherifiedCubeBufferGeometry };

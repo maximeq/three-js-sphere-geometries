@@ -3,7 +3,7 @@
   "version": "2.130.0",
   "description": "3 different meshes for modelling spheres as new geometric primitives for THREE.JS.",
   "main": "src/three-js-sphere-geometries.cjs",
-  "module": "src/exports.js",
+  "module": "src/check-wrapper.js",
   "browser": "./dist/three-js-sphere-geometries.min.js",
 
   "scripts": {
@@ -13,7 +13,8 @@
     "dev": "npm run build && npm run start"
   },
   "dependencies": {
-    "three": "0.130.x"
+    "three": "0.130.x",
+    "three-js-checker": "1.0.x"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^22.0.0",
